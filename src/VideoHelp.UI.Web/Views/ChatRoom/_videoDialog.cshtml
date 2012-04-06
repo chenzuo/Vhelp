@@ -1,0 +1,44 @@
+﻿    <div class="modal hide fade" id="videoDialog" style="width: 800">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h3>Соединение</h3>
+        </div>
+        <div class="modal-body" style="text-align: center; max-height: 800px;">
+     
+            <div class="row">
+                <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id = "videoPublisher" width="320" height="240" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+                        <param name="movie" value="@Url.Content("~/Content/Video/VideoIO.swf")">
+                        <param name="quality" value="high">
+                        <param name="bgcolor" value="#000000">
+                        <param name="allowFullScreen" value="true">
+                        <param name="allowScriptAccess" value="always">
+                        <param name="flashVars" value="controls=true">
+                        <embed src="@Url.Content("~/Content/Video/VideoIO.swf")" quality="high" bgcolor="#000000" width="320" height="240" name="videoPublisher" align="middle" play="true" loop="false" allowfullscreen="true" allowscriptaccess="always" flashvars="controls=true" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer"/>
+                    </object>
+            </div>
+            <div class="row" style="height: 20px">
+            </div>
+            <div class="row">
+                <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id ="videoSubscriber" width="320" height="240" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+                    <param name="movie" value="@Url.Content("~/Content/Video/VideoIO.swf")">
+                    <param name="quality" value="high">
+                    <param name="bgcolor" value="#000000">
+                    <param name="allowFullScreen" value="true">
+                    <param name="allowScriptAccess" value="always">
+                    <param name="flashVars" value="controls=true">
+                    <embed src="@Url.Content("~/Content/Video/VideoIO.swf")" quality="high" bgcolor="#000000" width="320" height="240" name="videoSubscriber" align="middle" play="true" loop="false" allowfullscreen="true" allowscriptaccess="always" flashvars="controls=true" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer"/>
+                </object>
+            </div>
+            
+            <input value="set" type="button" onclick="getFlashMovie('videoSubscriber').setProperty('src', 
+        'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/'
+        + '?play=asdas'
+        + '&amp;farID=' + publisherId)">
+        </div>
+        <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Закрыть</a>
+        </div>
+    </div>
+    
+                    
+                

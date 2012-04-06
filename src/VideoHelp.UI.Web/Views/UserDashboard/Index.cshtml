@@ -1,0 +1,57 @@
+﻿@model VideoHelp.Services.Domain.User
+
+@{
+    ViewBag.Title = "User dashboard";
+}
+
+
+
+<section id="navs">
+  <div class="page-header">
+    <h1>Nav, tabs, and pills <small>Highly customizable list-style navigation</small></h1>
+  </div>
+
+  <h2>Lightweight defaults <small>Same markup, different classes</small></h2>
+  <div class="row">
+    <div class="span3">
+      <div class="thumbnail span3">
+       
+        <div class="caption">
+            <h4>@Model.FullName</h4>
+            <p>Тут типа текст, что-ли</p>
+        </div>
+    </div>    
+    </div>
+    <div class="span9">
+      <h3>Basic tabs</h3>
+      <p>Take a regular <code>&lt;ul&gt;</code> of links and add <code>.nav-tabs</code>:</p>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Messages</a></li>
+      </ul>
+<pre class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"nav nav-tabs"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">  </span><span class="tag">&lt;li</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"active"</span><span class="tag">&gt;</span></li><li class="L2"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">Home</span><span class="tag">&lt;/a&gt;</span></li><li class="L3"><span class="pln">  </span><span class="tag">&lt;/li&gt;</span></li><li class="L4"><span class="pln">  </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">...</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span></li><li class="L5"><span class="pln">  </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">...</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span></li><li class="L6"><span class="tag">&lt;/ul&gt;</span></li></ol></pre>
+    </div>
+  </div>
+
+</section>
+
+
+
+
+    <div class="tabbable span9 offset3">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#1" data-toggle="tab">Section 1</a></li>
+            <li><a href="#2" data-toggle="tab">Section 2</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="1">
+                <p>I'm in Section 1.</p>
+            </div>
+            <div class="tab-pane" id="2">
+                <p>Howdy, I'm in Section 2.</p>
+            </div>
+        </div>
+    </div>
+
+

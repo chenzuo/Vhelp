@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    @ViewBag.Message 
+    <div class="span5">
+        <h1>USERS</h1>
+  @*      @foreach(var a in ViewBag.Users)
+        {
+            <h6>@a</h6>
+        } *@
+    </div> 
+     
+    <div class="span5"> 
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Test", "Test", "Home")</li>
+    </div> 
+</div>
+
+
+

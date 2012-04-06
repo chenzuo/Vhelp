@@ -1,0 +1,136 @@
+﻿@using System.Security.Policy
+@using VideoHelp.UI.Web
+@model VideoHelp.Services.Domain.User
+
+@{
+    ViewBag.Title = "title";
+}
+
+<script src="@Url.Content("~/Content/bootstrap/js/bootstrap-alert.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.signalr.min.js")" type="text/javascript"></script>
+<script type="text/javascript" src="/signalr/hubs"></script>
+
+<div class="page-header">
+    <h1>Видео чат <small>пригласить пользователей</small></h1>
+</div>
+<div id="notify" class="alert alert-block alert-error hide fade in">
+            <a class="close" onclick="this.hide()" href="#">×</a>
+            <h4 class="alert-heading">Oh snap! You got an error!</h4>
+            <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+            <p>
+              <a class="btn btn-danger" href="#">Take this action</a> <a class="btn" href="#">Or do this</a>
+            </p>
+          </div>
+<div class="row">
+    <div class="span4">
+        <div class="well">
+            <ul id ="onlineUsers" class="nav nav-list"> </ul>
+        </div>  
+    </div>
+    <div class="span8">
+        <div class="row">
+            <div class="span6">
+                
+                <input class="btn" type="button" value="Показать" onclick="$('#notify').show();"/>
+                <input class="btn" type="button" value="Скрыть" onclick="$('#notify').hide();"/>
+                
+
+                <input class="btn" type="button" value="Публиковать" onclick="getFlashMovie('videoPublish').setProperty('src', 
+                 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/'
+                 + '?publish=' + '@UserManager.CurrentUser.Id')"/>
+                
+
+            </div>
+            <div class="span6">
+                
+                <input value="set" type="button" onclick="getFlashMovie('videoSubscriber').setProperty('src', 
+        'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/'
+        + '?play=@UserManager.CurrentUser.Id'
+        + '&amp;farID=' + publisherId)">
+
+                <input value="Смотреть" type="button" onclick="getFlashMovie('videoSubscriber').setProperty('src', 
+                'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9' + '?play=@UserManager.CurrentUser.Id;farID=' +publisherId)">
+
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+
+ @Html.Partial("_videoDialog", new { User = Model, })
+
+<script>
+    
+    var users;
+    $(function () {
+        users = $.connection.onlineUserHub;
+        users.updateUserList = function (users) { updateOnlineUserList(users); };
+        $.connection.hub.start(function () { users.start(@Model.Id); });
+    });
+
+
+
+     function connectTo(userId, connectionId) {
+
+         users.connectTo(userId, connectionId);
+         $('#videoDialog').modal('show');
+     }
+
+   $("#videoDialog").on('shown', function() {
+
+        // getFlashMovie('videoPublisher1').setProperty('src', 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/?publish=asdas');
+
+     });
+     
+     function updateOnlineUserList(users) {
+        var userList = $("#onlineUsers");
+        userList.text("");
+        userList.append("<li class=\"nav-header\">Онлайн</li>"); 
+        
+       
+        $.each(users, function(i) {
+            if(this.UserId != @Model.Id) {
+              userList.append(" <li><a href=\"#\" onclick=\"connectTo(" + this.UserId + ", '" + this.ConnectionId + "')\"><i class=\"icon-user\"/>" +  this.FullName + "</a></li>");   
+            }
+        });
+    }
+     
+
+    function getFlashMovie(movieName) {
+        var isIE = navigator.appName.indexOf("Microsoft") != -1;
+        return (isIE) ? window[movieName] : document[movieName];
+    }
+
+    function onCreationComplete(event) {
+        
+        if(event.objectID == "videoPublisher") {
+           // $("videoPublisher").attr('src', 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/?publish=asdas');
+            getFlashMovie('videoPublisher').setProperty('src', 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/?publish=asdas');
+        }
+        
+        if(event.objectID == "videoSubscriber") {
+           // $("videoPublisher").attr('src', 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/?publish=asdas');
+                           getFlashMovie('videoSubscriber').setProperty('src',
+                    'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/'
+                        + '?play=asdas'
+                            + '&amp;farID=' + publisherId);
+        }
+    }
+
+    function onPropertyChange(event) {
+        if (event.property == "nearID") {
+            if (event.objectID == "videoPublisher") {
+                publisherId = event.newValue;
+
+                getFlashMovie('videoSubscriber').setProperty('src',
+                    'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/'
+                        + '?play=asdas'
+                            + '&amp;farID=' + publisherId);
+
+               // getFlashMovie('videoSubscriber').setProperty('src', 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/?play=asdas&amp;farID='+ event.newValue);
+            }
+        }
+    }
+
+</script>
