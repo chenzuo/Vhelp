@@ -10,13 +10,9 @@ namespace VideoHelp.UI.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICommandBus _commandBus;
-        private readonly IReadRepository _repository;
 
-        public HomeController(ICommandBus bus, IReadRepository repository)
+        public HomeController()
        {
-           _commandBus = bus;
-           _repository = repository;
        }
 
         public ActionResult Index()
@@ -36,18 +32,7 @@ namespace VideoHelp.UI.Web.Controllers
             return View(new UserView());
         }
 
-        public ActionResult Meetings()
-        {
-            return View(_repository.GetAll<MeetingListView>());
-        }
 
-        public ActionResult CreateMeeting()
-        {
-            //throw new NotImplementedException();
-            var name = Request.Form["newRoomName"];
-            _commandBus.Publish(new CreateMeeting(UserManager.CurrentUser.Id, name));
 
-            return RedirectToAction("Meetings");
-        }
     }
 }

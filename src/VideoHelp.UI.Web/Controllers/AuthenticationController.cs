@@ -75,7 +75,7 @@ namespace VideoHelp.UI.Web.Controllers
             _commandBus.Publish(new UpdateUserState(user.Id, DateTime.Now, UserState.Online));
             UserManager.Loggin(user);
             
-            return RedirectToAction("Meetings", "Home");
+            return RedirectToAction("Index", "Meetings");
         }
 
         private UserAssociationView geUsertAssociationWith(AccountInformation account)
