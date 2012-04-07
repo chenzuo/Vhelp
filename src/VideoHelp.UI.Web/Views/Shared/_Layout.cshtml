@@ -12,36 +12,21 @@
     <script src="@Url.Content("~/Content/bootstrap/js/bootstrap-modal.js")"></script>
     <script src="@Url.Content("~/Content/bootstrap/js/bootstrap-transition.js")"></script>
 
-
-    <script>
-        function onPropertyChange(event) {
-            if (event.property == "nearID") {
-                if (event.objectID == "videoPublish") {
-                    publisherId = event.newValue;
-                }
-            }
-        }
-
-    </script>
-
 </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="">Video Help</a>
+                <ul class="nav pull-right">
+                    @Html.Partial("_LogginMenuItem")
+                </ul>
+            </div>
+        </div>
+        </div>
+        
+        @RenderBody()
 
-<body>
-
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="brand" href="">Video Help</a>
-        <ul class="nav pull-right">
-            @Html.Partial("_LogginMenuItem")
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="container">
-      @RenderBody()
-  </div>
-    @Html.Partial("_LogginDialog")
-</body>
-
+        @Html.Partial("_LogginDialog")
+    </body>
 </html>
