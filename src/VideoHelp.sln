@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoHelp.UI.Utility", "VideoHelp.UI.Utility\VideoHelp.UI.Utility.csproj", "{43DF3401-6F83-4F72-8652-ADD3BD098829}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoHelp.UI.Web", "VideoHelp.UI.Web\VideoHelp.UI.Web.csproj", "{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoHelp.Domain", "VideoHelp.Domain\VideoHelp.Domain.csproj", "{5241E071-150C-4688-8E98-6611A2AEFFC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoHelp.Domain.Messages", "VideoHelp.Domain.Messages\VideoHelp.Domain.Messages.csproj", "{BE6FD943-C1C8-4684-A8FC-1187D4FE4B7D}"
@@ -35,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3A986
 		..\tools\.nuget\NuGet.targets = ..\tools\.nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoHelp.UI.Web", "UI\VideoHelp.UI.Web\VideoHelp.UI.Web.csproj", "{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,18 +57,6 @@ Global
 		{43DF3401-6F83-4F72-8652-ADD3BD098829}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{43DF3401-6F83-4F72-8652-ADD3BD098829}.Release|x86.ActiveCfg = Release|Any CPU
 		{43DF3401-6F83-4F72-8652-ADD3BD098829}.Release|x86.Build.0 = Release|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Debug|x86.Build.0 = Debug|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Release|x86.ActiveCfg = Release|Any CPU
-		{D15C62AF-6898-4F2A-9C0A-50AAC5FF58C7}.Release|x86.Build.0 = Release|Any CPU
 		{5241E071-150C-4688-8E98-6611A2AEFFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5241E071-150C-4688-8E98-6611A2AEFFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5241E071-150C-4688-8E98-6611A2AEFFC4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -195,6 +183,16 @@ Global
 		{25C84855-3735-4CBD-94D7-F1958EB2AD14}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{25C84855-3735-4CBD-94D7-F1958EB2AD14}.Release|x86.ActiveCfg = Release|x86
 		{25C84855-3735-4CBD-94D7-F1958EB2AD14}.Release|x86.Build.0 = Release|x86
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{55DA6A8C-B5AF-4292-83F1-6DA53B872C70}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
