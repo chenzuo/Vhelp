@@ -25,7 +25,7 @@
                 @foreach (MeetingListView meeting in Model)
                 {
                     <tr>
-                        <td>@meeting.Name</td>
+                        <td>@Html.ActionLink(@meeting.Name, "Meeting", new { meetingId = @meeting.Id }, null) </td>
                         <td>@meeting.OwnerNick</td>
                         <td>@meeting.CreationDate.ToLocalTime()</td>
                     </tr>

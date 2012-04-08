@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using VideoHelp.ReadModel;
 using VideoHelp.ReadModel.Meeting;
 
@@ -18,5 +19,10 @@ namespace VideoHelp.UI.Web.Controllers
             return View(_repository.GetAll<MeetingListView>());
         }
 
+        public ActionResult Meeting(Guid meetingId)
+        {
+            var meeting = _repository.GetById<MeetingView>(meetingId);
+            return View(meeting);
+        }
     }
 }

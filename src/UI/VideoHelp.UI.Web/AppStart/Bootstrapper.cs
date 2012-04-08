@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using SignalR.Hosting.AspNet;
 using VideoHelp.Infrastructure.Installers;
 using VideoHelp.ReadModel.Infrastructure.Installers;
 using VideoHelp.UI.Domain.LoginzaAuthentication;
@@ -53,6 +55,7 @@ namespace VideoHelp.UI.Web.AppStart
             _container.Dispose();
         }
 	}
+
 }
  
 

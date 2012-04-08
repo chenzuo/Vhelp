@@ -17,7 +17,7 @@ namespace VideoHelp.ReadModel.Meeting
         public Guid Id { get; set; }
 
         public Guid Owner { get; set; }
-
+        
         public string MainVideoStream { get; set; }
 
         public IDictionary<Guid, string> VideoStreams { get; set; }
