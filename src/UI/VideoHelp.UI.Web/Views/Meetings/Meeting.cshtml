@@ -29,10 +29,10 @@
     </div>    
     
 
-    <div style="position: absolute;left: 310px; top: 40px; bottom: 0; right: 0; text-align: center">
+    <div style="position: absolute;left: 310px; top: 40px; bottom: 0; right: 0; text-align: center; vert-align: middle;">
     
 
-            <div id="contentArea" style="margin: 0 auto;">
+            <div id="contentArea" >
               <div class="userContent">...</div>
               <div class="userContent">...</div>
               <div class="userContent">...</div>
@@ -77,14 +77,13 @@
                 // options
                 itemSelector: '.userContent',
                 isFitWidth: true,
-                columnWidth: 340,
-                isAnimated: !Modernizr.csstransitions
+                columnWidth: 340
             });
         });
 
         $("#addBox").click(function () {
-            var $boxes = $('<div class="userContent"/><div class="userContent"/>');
-            $('#contentArea').append($boxes).masonry('appended', $boxes);
+            var $box = $('<div class="userContent"/>');
+            $('#contentArea').append($box).masonry('appended', $box);
 
         });
 

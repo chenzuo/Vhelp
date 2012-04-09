@@ -13,10 +13,14 @@ width: 170px;
 border-right: 1px solid #CCC;
 }
 
-.userContent {
-  width: 320px;
-  height: 240px;
-  margin: 20px;
-  float: left;
-  background-color: #F9F9F9;
+#contentArea {
+    margin: 20px auto; 
+ 
 }
+.userContent {
+    width: 320px;
+    height: 240px;
+    margin: 10px;
+    background-color: #F9F9F9;
+}
+
