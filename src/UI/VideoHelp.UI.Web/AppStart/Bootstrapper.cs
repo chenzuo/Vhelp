@@ -41,7 +41,7 @@ namespace VideoHelp.UI.Web.AppStart
 
             DependencyResolver.SetResolver(_container.Resolve, type => _container.ResolveAll(type).OfType<object>());
 
-		    var profileInfoExtractor = new AccountInformationExtractor(
+            var profileInfoExtractor = new AccountInformationExtractor(
                                                             new GoogleStratagy(), 
                                                             new YandexStratagy(),
                                                             new MailRuStratagy(),

@@ -8,8 +8,8 @@
 <script src="/Scripts/jquery.signalR.min.js" type="text/javascript"></script>
 <script src="/signalr/hubs" type="text/javascript"></script>
 
-<div style="height: 100%; width: 100%; position: absolute;">
-    <div style="width: 310px; height: 100%; bottom: 0; position: absolute; background: #F9F9F9; border-right: 1px solid #CCC; border-right-width: 1px; border-right-style: solid; border-right-color: #CCCCCC;">
+
+    <div style="width: 310px; left: 0; top: 40px; bottom: 0; position: absolute; background: #F9F9F9; border-right: 1px solid #CCC; border-right-width: 1px; border-right-style: solid; border-right-color: #CCCCCC;">
         <div class="container-fluid">
         
             <div class="page-header">
@@ -18,6 +18,7 @@
                     
                     <div class="caption">
                         <p><a href="#" id="createStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Включить</a></p>
+                        <p><a href="#" id="addBox" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Добавить</a></p>
                     </div>
                 </div>
                                     
@@ -28,21 +29,24 @@
     </div>    
     
 
-    <div style="width: 100%;  position: absolute;left: 300px;">
+    <div style="position: absolute;left: 310px; top: 40px; bottom: 0; right: 0; text-align: center">
     
-        <div class="container-fluid">
-  
 
-        </div>
+            <div id="contentArea" style="margin: 0 auto;">
+              <div class="userContent">...</div>
+              <div class="userContent">...</div>
+              <div class="userContent">...</div>
+            </div>
     </div>
 
-</div>
 
-
+<script src="/Scripts/jquery.masonry.min.js"></script>
 <script src="/Scripts/swfobject.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.swfobject.1-1-1.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+
+
 
     $(document).ready(function () {
         $('#myFlash').flash(
@@ -64,7 +68,25 @@
                 type: 'application/x-shockwave-flash',
                 pluginspage: 'http://www.adobe.com/go/getflashplayer'
             });
-    });
+        });
+
+
+
+        $(function () {
+            $('#contentArea').masonry({
+                // options
+                itemSelector: '.userContent',
+                isFitWidth: true,
+                columnWidth: 340,
+                isAnimated: !Modernizr.csstransitions
+            });
+        });
+
+        $("#addBox").click(function () {
+            var $boxes = $('<div class="userContent"/><div class="userContent"/>');
+            $('#contentArea').append($boxes).masonry('appended', $boxes);
+
+        });
 
 
     

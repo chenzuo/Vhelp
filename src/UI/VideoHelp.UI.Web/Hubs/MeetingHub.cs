@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 using SignalR.Hubs;
 using VideoHelp.Infrastructure;
 
@@ -7,11 +8,10 @@ namespace VideoHelp.UI.Web.Hubs
     public class MeetingHub : Hub
     {
         private readonly ICommandBus _commandBus;
-        private string a;
-        public MeetingHub(ICommandBus commandBus)
+
+        public MeetingHub()
         {
-            _commandBus = commandBus;
-            a = "fd";
+            _commandBus = DependencyResolver.Current.GetService<ICommandBus>();
         }
 
         public void CreateVideoStream(string userId, string streamId)
