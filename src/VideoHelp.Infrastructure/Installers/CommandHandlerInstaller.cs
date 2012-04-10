@@ -27,7 +27,7 @@ namespace VideoHelp.Infrastructure.Installers
             bus.RegisterCommandHandler<CreateMeeting>(userCommandHandler);
             bus.RegisterCommandHandler<CreateUser>(userCommandHandler);
             bus.RegisterCommandHandler<UpdateUserState>(userCommandHandler);
-            bus.RegisterCommandHandler<AddVideoStream>(meetingCommandHandler);
+            bus.RegisterCommandHandler<AttachMediaContent>(meetingCommandHandler);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CommonDomain.Core;
 using VideoHelp.Domain.Messages.Events.Meeting;
+using VideoHelp.Domain.Messages.ValueObject;
 
 namespace VideoHelp.Domain
 {
@@ -25,21 +26,21 @@ namespace VideoHelp.Domain
 
         public DateTime CreationDate { get; private set; }
 
-        public List<VideoStream> VideoStreams { get; private set; }
+        public List<MediaContent> MediaContents { get; private set; }
 
-        public void AddVideoStream(Guid userId, string streamPointId)
+        public void AttachMediaContent(MediaContent content)
         {
-            RaiseEvent(new VideoStreamAdded(Id, userId, streamPointId));
+            RaiseEvent(new MediaContentAdded(Id, content));
         }
 
-        private void Apply(VideoStreamAdded @event)
+        private void Apply(MediaContentAdded @event)
         {
-            if(VideoStreams == null)
+            if(MediaContents == null)
             {
-                VideoStreams = new List<VideoStream>();
+                MediaContents = new List<MediaContent>();
             }
 
-            VideoStreams.Add(new VideoStream(@event.StreamId, @event.UserId));
+           MediaContents.Add(@event.Content);
         }
 
         private void Apply(MeetingCreated @event)

@@ -1,37 +1,51 @@
 ﻿@using VideoHelp.ReadModel.Meeting
-@model IEnumerable<MeetingListView>
+@model IEnumerable<VideoHelp.ReadModel.Meeting.MeetingListView>
 
 @{
     ViewBag.Title = "Список комнат";
 }
 
 <div class="container">
-  
-    <div class="span8 offset2">
+    
+    <div class="row">
+        <div class="span8 offset2">
       
-        <div class="page-header">
-            <h1>Список митингов <small>Выбери или создай</small></h1>
-        </div>
+            <div class="page-header">
+                <h1>Список митингов <small>Выбери или создай</small></h1>
+            </div>
    
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Название</th>
-                    <th>Создал</th>
-                    <th>Дата</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (MeetingListView meeting in Model)
-                {
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@Html.ActionLink(@meeting.Name, "Meeting", new { meetingId = @meeting.Id }, null) </td>
-                        <td>@meeting.OwnerNick</td>
-                        <td>@meeting.CreationDate.ToLocalTime()</td>
+                        <th>Название</th>
+                        <th>Создал</th>
+                        <th>Дата</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (MeetingListView meeting in Model)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(@meeting.Name, "Meeting", new {meetingId = @meeting.Id}, null) </td>
+                            <td>@meeting.OwnerNick</td>
+                            <td>@meeting.CreationDate.ToLocalTime()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-    </div>        
+        </div>    
+    </div>
+     
+    
+    <div class="row">
+        <div class="span8 offset2">
+        @using (Html.BeginForm("NewMeeting", "Meetings", FormMethod.Post, new { @class = "well form-inline" }))
+        {
+            @Html.TextBox("meetingName", null, new { @class = "input-small", style = "width: 86%", placeholder = "Название беседы" })
+            <button type="submit" class="btn btn-success" ><a class="icon-th icon-white"></a> Создать</button>    
+        }
+        </div>    
+    </div>
+           
 </div>

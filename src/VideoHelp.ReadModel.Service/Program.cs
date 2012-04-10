@@ -58,7 +58,7 @@ namespace VideoHelp.ReadModel.Service
             var eventBus = _container.Resolve<IEventBus>();
 
             var userEventHandler = new UserEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<INotificationBus>());
-            var meetingEventHandler = new MeetingEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>());
+            var meetingEventHandler = new MeetingEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>(), _container.Resolve<INotificationBus>());
             var meetingListEventHandler = new MeetingListEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>());
 
             eventBus.RegisterEventHandler<UserCreated>(userEventHandler.Handle);
@@ -66,7 +66,7 @@ namespace VideoHelp.ReadModel.Service
 
 
             eventBus.RegisterEventHandler<MeetingCreated>(meetingEventHandler.Handle);
-            eventBus.RegisterEventHandler<VideoStreamAdded>(meetingEventHandler.Handle);
+            eventBus.RegisterEventHandler<MediaContentAdded>(meetingEventHandler.Handle);
 
             eventBus.RegisterEventHandler<MeetingCreated>(meetingListEventHandler.Handle);
         }

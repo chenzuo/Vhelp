@@ -1,4 +1,6 @@
 ﻿using VideoHelp.Domain.Messages.Events.Meeting;
+using VideoHelp.ReadModel.Contracts;
+using VideoHelp.ReadModel.Notification;
 
 namespace VideoHelp.ReadModel.Meeting
 {
@@ -6,11 +8,13 @@ namespace VideoHelp.ReadModel.Meeting
     {
         private readonly IWriteRepository _writeRepository;
         private readonly IReadRepository _readRepository;
+        private readonly INotificationBus _notificationBus;
 
-        public MeetingEventHandler(IWriteRepository writeRepository, IReadRepository readRepository)
+        public MeetingEventHandler(IWriteRepository writeRepository, IReadRepository readRepository, INotificationBus notificationBus)
         {
             _writeRepository = writeRepository;
             _readRepository = readRepository;
+            _notificationBus = notificationBus;
         }
 
         public void Handle(MeetingCreated @event)
@@ -19,18 +23,12 @@ namespace VideoHelp.ReadModel.Meeting
             _writeRepository.SaveChanges();
         }
 
-        public void Handle(VideoStreamAdded @event)
+        public void Handle(MediaContentAdded @event)
         {
             var meeting =_readRepository.GetById<MeetingView>(@event.AggregateId);
-            if(@event.UserId == meeting.Owner)
-            {
-                meeting.MainVideoStream = @event.StreamId;
-            }
-            else
-            {
-                meeting.VideoStreams.Add(@event.UserId, @event.StreamId);
-            }
+            meeting.MediaContents.Add(@event.Content);
             _readRepository.SaveChanges();
+            _notificationBus.PublishNotification(new MeetingViewUpdated(meeting));
         } 
     }
 }

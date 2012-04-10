@@ -44,6 +44,15 @@
     <Reference Include="FluentSecurity">
       <HintPath>..\..\..\libs\FluentSecurity.1.4.0\lib\FluentSecurity.dll</HintPath>
     </Reference>
+    <Reference Include="Magnum, Version=2.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\libs\Magnum.2.0.0.4\lib\NET40\Magnum.dll</HintPath>
+    </Reference>
+    <Reference Include="MassTransit, Version=2.1.410.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\libs\MassTransit.2.1.1\lib\net40\MassTransit.dll</HintPath>
+    </Reference>
+    <Reference Include="MassTransit.Transports.MSMQ, Version=2.1.410.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\libs\MassTransit.2.1.1\lib\net40\MassTransit.Transports.MSMQ.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\..\libs\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -198,7 +207,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />

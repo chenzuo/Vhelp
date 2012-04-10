@@ -19,7 +19,6 @@ namespace VideoHelp.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             var massTransitBus = new ServiceBusFactory().Create(_endpoint);
-
             container.Register(Component.For<IServiceBus>().Instance(massTransitBus));
         }
     }

@@ -45,6 +45,7 @@
     <Compile Include="Meeting\MeetingListEventHandler.cs" />
     <Compile Include="Meeting\MeetingListView.cs" />
     <Compile Include="Meeting\MeetingView.cs" />
+    <Compile Include="Notification\MeetingViewUpdated.cs" />
     <Compile Include="Notification\UserAssociationUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Users\UserAssociationView.cs" />

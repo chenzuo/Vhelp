@@ -101,9 +101,9 @@
         function onPropertyChange(event) {
             console.log(event.property + " " + event.newValue);
             if (event.property == "nearID") {
-                
+
                 if (event.objectID == "video-publisher") {
-                    $.connection.meetingHub.createVideoStream('@UserManager.CurrentUser.Id', event.newValue);
+                    $.connection.meetingHub.addCameraStream('@Model.Id', '@UserManager.CurrentUser.Id', event.newValue);
                 }
             }
         }

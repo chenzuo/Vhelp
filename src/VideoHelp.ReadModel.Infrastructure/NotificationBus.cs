@@ -32,6 +32,11 @@ namespace VideoHelp.ReadModel.Infrastructure
 
         }
 
+        public Action SubscribeNotification<T>(Action<T> notificationAction, Guid viewId) where T : Contracts.Notification
+        {
+            return () => _serviceBus.SubscribeHandler(notificationAction, obj => obj.NotificationId == viewId);
+        }
+
         public void PublishNotification<T>(T notification) where T : Contracts.Notification
         {
             _serviceBus.Publish(notification);

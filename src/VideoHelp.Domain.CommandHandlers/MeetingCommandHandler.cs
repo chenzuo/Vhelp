@@ -4,7 +4,7 @@ using VideoHelp.Domain.Messages.Commands;
 
 namespace VideoHelp.Domain.CommandHandlers
 {
-    public class MeetingCommandHandler : ICommandHandler<AddVideoStream>
+    public class MeetingCommandHandler : ICommandHandler<AttachMediaContent>
     {
         private readonly IRepository _repository;
 
@@ -13,10 +13,10 @@ namespace VideoHelp.Domain.CommandHandlers
             _repository = repository;
         }
 
-        public void Handle(AddVideoStream command)
+        public void Handle(AttachMediaContent command)
         {
             var meeting = _repository.GetById<Meeting>(command.AggregateId);
-            meeting.AddVideoStream(command.UserId, command.StreamId);
+           // meeting.AttachMediaContent(command.Content);
             _repository.Save(meeting, Guid.NewGuid());
         }
     }
