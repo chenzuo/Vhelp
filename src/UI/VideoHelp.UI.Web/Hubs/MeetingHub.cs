@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using SignalR.Hubs;
 using VideoHelp.Domain.Messages.Commands;
-using VideoHelp.Domain.Messages.ValueObject;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Notification;
@@ -37,7 +36,7 @@ namespace VideoHelp.UI.Web.Hubs
 
         public void AddCameraStream(string meetingId, string userId, string streamLink)
         {
-            _commandBus.Publish(new AttachMediaContent(new Guid(meetingId), new CameraStream(Guid.NewGuid(), new Guid(userId), streamLink)));
+            _commandBus.Publish(new CreateCameraStream(new Guid(meetingId), new Guid(userId), streamLink));
         }
 
         private void meetingUpdated(MeetingViewUpdated notification)

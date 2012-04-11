@@ -23,11 +23,14 @@ namespace VideoHelp.Infrastructure.Installers
 
             var userCommandHandler = new UserCommandHandler(container.Resolve<IRepository>());
             var meetingCommandHandler = new MeetingCommandHandler(container.Resolve<IRepository>());
+            var mediaContentCommandHandler = new MediaContentCommandHandler(container.Resolve<IRepository>());
 
-            bus.RegisterCommandHandler<CreateMeeting>(userCommandHandler);
             bus.RegisterCommandHandler<CreateUser>(userCommandHandler);
             bus.RegisterCommandHandler<UpdateUserState>(userCommandHandler);
-            bus.RegisterCommandHandler<AttachMediaContent>(meetingCommandHandler);
+
+            bus.RegisterCommandHandler<CreateMeeting>(meetingCommandHandler);
+
+            bus.RegisterCommandHandler<CreateCameraStream>(mediaContentCommandHandler);
         }
     }
 }

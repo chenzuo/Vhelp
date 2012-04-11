@@ -4,6 +4,7 @@ using System.Threading;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Topshelf;
+using VideoHelp.Domain.Messages.Events.MediaContent;
 using VideoHelp.Domain.Messages.Events.Meeting;
 using VideoHelp.Domain.Messages.Events.Users;
 using VideoHelp.Infrastructure;
@@ -66,7 +67,7 @@ namespace VideoHelp.ReadModel.Service
 
 
             eventBus.RegisterEventHandler<MeetingCreated>(meetingEventHandler.Handle);
-            eventBus.RegisterEventHandler<MediaContentAdded>(meetingEventHandler.Handle);
+            eventBus.RegisterEventHandler<CameraStreamCreated>(meetingEventHandler.Handle);
 
             eventBus.RegisterEventHandler<MeetingCreated>(meetingListEventHandler.Handle);
         }

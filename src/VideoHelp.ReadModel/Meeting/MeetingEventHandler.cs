@@ -1,4 +1,6 @@
-﻿using VideoHelp.Domain.Messages.Events.Meeting;
+﻿using System;
+using VideoHelp.Domain.Messages.Events.MediaContent;
+using VideoHelp.Domain.Messages.Events.Meeting;
 using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Notification;
 
@@ -23,12 +25,23 @@ namespace VideoHelp.ReadModel.Meeting
             _writeRepository.SaveChanges();
         }
 
-        public void Handle(MediaContentAdded @event)
+        public void Handle(CameraStreamCreated @event)
         {
-            var meeting =_readRepository.GetById<MeetingView>(@event.AggregateId);
-            meeting.MediaContents.Add(@event.Content);
+            var meeting =_readRepository.GetById<MeetingView>(@event.MeetingId);
+
+            meeting.MediaContents.Add( new CameraStream(@event.AggregateId, @event.OwnerUser, @event.StreamLink));
             _readRepository.SaveChanges();
             _notificationBus.PublishNotification(new MeetingViewUpdated(meeting));
         } 
+    }
+
+    public class CameraStream : MediaContent
+    {
+        public CameraStream(Guid id, Guid ownerUser, string streamLink) : base(id, ownerUser)
+        {
+            StreamLink = streamLink;
+        }
+
+        public string StreamLink { get; private set; }
     }
 }

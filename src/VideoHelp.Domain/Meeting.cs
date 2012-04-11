@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using CommonDomain.Core;
 using VideoHelp.Domain.Messages.Events.Meeting;
-using VideoHelp.Domain.Messages.ValueObject;
 
 namespace VideoHelp.Domain
 {
@@ -26,22 +24,6 @@ namespace VideoHelp.Domain
 
         public DateTime CreationDate { get; private set; }
 
-        public List<MediaContent> MediaContents { get; private set; }
-
-        public void AttachMediaContent(MediaContent content)
-        {
-            RaiseEvent(new MediaContentAdded(Id, content));
-        }
-
-        private void Apply(MediaContentAdded @event)
-        {
-            if(MediaContents == null)
-            {
-                MediaContents = new List<MediaContent>();
-            }
-
-           MediaContents.Add(@event.Content);
-        }
 
         private void Apply(MeetingCreated @event)
         {

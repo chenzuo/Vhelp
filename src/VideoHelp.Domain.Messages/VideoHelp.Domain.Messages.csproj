@@ -43,23 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AttachMediaContent.cs" />
+    <Compile Include="Commands\CreateCameraStream.cs" />
     <Compile Include="Commands\UpdateUserState.cs" />
     <Compile Include="DomainCommand.cs" />
     <Compile Include="CommandResult.cs" />
     <Compile Include="Commands\CreateUser.cs" />
     <Compile Include="DomainEvent.cs" />
-    <Compile Include="Events\Meeting\MediaContentAdded.cs" />
+    <Compile Include="Events\MediaContent\CameraStreamCreated.cs" />
     <Compile Include="Events\Meeting\MeetingCreated.cs" />
     <Compile Include="Commands\CreateMeeting.cs" />
     <Compile Include="Events\Users\UserAssociatedWithIdentity.cs" />
     <Compile Include="Events\Users\UserCreated.cs" />
     <Compile Include="Events\Users\UserStateUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueObject\CameraStream.cs" />
-    <Compile Include="ValueObject\MediaContent.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ValueObject\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

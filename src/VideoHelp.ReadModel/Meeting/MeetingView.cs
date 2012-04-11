@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using VideoHelp.Domain.Messages.ValueObject;
 
 namespace VideoHelp.ReadModel.Meeting
 {
@@ -18,7 +17,7 @@ namespace VideoHelp.ReadModel.Meeting
         public Guid Id { get; set; }
 
         public Guid Owner { get; set; }
-        
+
         public IList<MediaContent> MediaContents { get; set; }
         
         public string Name { get; set; }

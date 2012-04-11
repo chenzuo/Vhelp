@@ -1,5 +1,6 @@
 ﻿using System;
 using MassTransit;
+using MassTransit.NLogIntegration;
 
 namespace VideoHelp.Infrastructure.Factories
 {
@@ -10,6 +11,7 @@ namespace VideoHelp.Infrastructure.Factories
             return global::MassTransit.ServiceBusFactory.New(sbc =>
                 {
                     sbc.UseMsmq();
+                    sbc.UseNLog();
                     sbc.VerifyMsmqConfiguration();
                     sbc.UseMulticastSubscriptionClient();
                     sbc.ReceiveFrom(endpoint);

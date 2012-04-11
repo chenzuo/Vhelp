@@ -36,11 +36,13 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\INotificationBus.cs" />
     <Compile Include="IWriteRepository.cs" />
     <Compile Include="Contracts\Notification.cs" />
+    <Compile Include="Meeting\IMediaContent.cs" />
     <Compile Include="Meeting\MeetingEventHandler.cs" />
     <Compile Include="Meeting\MeetingListEventHandler.cs" />
     <Compile Include="Meeting\MeetingListView.cs" />
