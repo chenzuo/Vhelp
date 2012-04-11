@@ -51,27 +51,22 @@ namespace VideoHelp.UI.Web.Controllers
 
         private ActionResult login(AccountInformation account)
         {
-            UserView user;
-            var asociation = geUsertAssociationWith(account);
-
-            if(asociation == null || asociation.UserId == Guid.Empty)
+            var association = geUsertAssociationWith(account);
+            var userId = association.With(view => view.UserId);
+            
+            if(association == null || association.UserId == Guid.Empty)
             {
-                var commandGuid = Guid.NewGuid();
-                _commandBus.Publish(new CreateUser(commandGuid, account.NickName, account.FullName, account.Email, account.Identity.ToLower()));
-                var notification = _notificationBus.WaitNotification<UserAssociationUpdated>(commandGuid);
-
-                user = _readRepository.GetById<UserView>(notification.NotificationId);
-            }
-            else
-            {
-                user = _readRepository.GetAll<UserView>().FirstOrDefault(view => view.Id == asociation.UserId);
+               userId = Guid.NewGuid();
+               _commandBus.Publish(new CreateUser(userId, account.NickName, account.FullName, account.Email, account.Identity.ToLower()));
+               var isUpdated = _notificationBus.WaitNotification<UserView>(userId);
+                if(!isUpdated)
+                {
+                    throw new HttpException(500, "Жопа! Такого не должно быть!");
+                }
             }
 
-            if (user == null)
-            {
-                throw new HttpException(500, "Жопа! Такого не должно быть!");
-            }
-
+            var user = _readRepository.GetById<UserView>(userId);
+           
             _commandBus.Publish(new UpdateUserState(user.Id, DateTime.Now, UserState.Online));
             UserManager.Loggin(user);
             

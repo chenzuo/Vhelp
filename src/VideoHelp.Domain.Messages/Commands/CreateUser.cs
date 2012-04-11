@@ -6,7 +6,7 @@ namespace VideoHelp.Domain.Messages.Commands
     [DataContract]
     public class CreateUser : DomainCommand
     {
-        public CreateUser(Guid id, string nick, string fullName, string email, string identity) : base(id)
+        public CreateUser(Guid userId, string nick, string fullName, string email, string identity) : base(userId)
         {
             Nick = nick;
             FullName = fullName;

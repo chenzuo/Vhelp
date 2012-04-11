@@ -21,8 +21,10 @@ namespace VideoHelp.ReadModel.Meeting
 
         public void Handle(MeetingCreated @event)
         {
-            _writeRepository.Add(new MeetingView(@event.AggregateId, @event.OwnerId, @event.Name, @event.CreationDate));
+            var meeting = new MeetingView(@event.AggregateId, @event.OwnerId, @event.Name, @event.CreationDate);
+            _writeRepository.Add(meeting);
             _writeRepository.SaveChanges();
+            _notificationBus.PublishNotification(new ViewUpdated<MeetingView>(meeting.Id));
         }
 
         public void Handle(CameraStreamCreated @event)
@@ -31,7 +33,7 @@ namespace VideoHelp.ReadModel.Meeting
 
             meeting.MediaContents.Add( new CameraStream(@event.AggregateId, @event.OwnerUser, @event.StreamLink));
             _readRepository.SaveChanges();
-            _notificationBus.PublishNotification(new MeetingViewUpdated(meeting));
+            _notificationBus.PublishNotification(new ViewUpdated<MeetingView>(meeting.Id));
         } 
     }
 

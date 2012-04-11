@@ -125,10 +125,11 @@
   
 
     //стартуем все хабы
-    $.connection.hub.start();
+    $.connection.hub.start(
+        function() {
+            meetingHub.joinToMeeting('@Model.Id', '@UserManager.CurrentUser.Id');
+        });
 
-    
-    
 
     function getFlashMovie(movieName) {
         var isIE = navigator.appName.indexOf("Microsoft") != -1;

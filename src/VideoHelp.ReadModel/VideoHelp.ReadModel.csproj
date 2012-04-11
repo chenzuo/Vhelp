@@ -39,16 +39,16 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\INotification.cs" />
     <Compile Include="Contracts\INotificationBus.cs" />
     <Compile Include="IWriteRepository.cs" />
-    <Compile Include="Contracts\Notification.cs" />
+    <Compile Include="Contracts\IView.cs" />
+    <Compile Include="Notification\ViewUpdated.cs" />
     <Compile Include="Meeting\IMediaContent.cs" />
     <Compile Include="Meeting\MeetingEventHandler.cs" />
     <Compile Include="Meeting\MeetingListEventHandler.cs" />
     <Compile Include="Meeting\MeetingListView.cs" />
     <Compile Include="Meeting\MeetingView.cs" />
-    <Compile Include="Notification\MeetingViewUpdated.cs" />
-    <Compile Include="Notification\UserAssociationUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Users\UserAssociationView.cs" />
     <Compile Include="Users\UserEventHandler.cs" />

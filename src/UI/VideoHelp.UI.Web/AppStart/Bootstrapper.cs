@@ -5,7 +5,10 @@ using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MassTransit;
+using SignalR.Configuration;
 using SignalR.Hosting.AspNet;
+using SignalR.Infrastructure;
+using SignalR.Transports;
 using VideoHelp.Infrastructure;
 using VideoHelp.Infrastructure.Installers;
 using VideoHelp.ReadModel.Contracts;
@@ -60,6 +63,11 @@ namespace VideoHelp.UI.Web.AppStart
             _serviceBus = _container.Resolve<IServiceBus>();
             _commandBus = _container.Resolve<ICommandBus>();
 	        _notificationBus = _container.Resolve<INotificationBus>();
+
+
+            var config = AspNetHost.DependencyResolver.Resolve<IConfigurationManager>();
+            config.DisconnectTimeout = TimeSpan.FromSeconds(10);
+
 	    }
 
         public static void Stop()

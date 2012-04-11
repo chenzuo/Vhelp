@@ -1,8 +1,9 @@
 using System;
+using VideoHelp.ReadModel.Contracts;
 
 namespace VideoHelp.ReadModel.Meeting
 {
-    public class MeetingListView
+    public class MeetingListView : IView
     {
         public MeetingListView(Guid id, Guid ownerId, string ownerNick, string name, DateTime creationDate)
         {

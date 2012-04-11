@@ -2,6 +2,7 @@
 using System.Threading;
 using MassTransit;
 using VideoHelp.ReadModel.Contracts;
+using VideoHelp.ReadModel.Notification;
 
 namespace VideoHelp.ReadModel.Infrastructure
 {
@@ -16,28 +17,30 @@ namespace VideoHelp.ReadModel.Infrastructure
             _resetEvent = new ManualResetEventSlim(false);
         }
 
-        public T WaitNotification<T>(Guid viewId, int timeoutInSec = 30) where T : Contracts.Notification
+        bool INotificationBus.WaitNotification<TView>(Guid guid, int timeoutInSec)
         {
-            T result = null;
-            var cancelSubscription = _serviceBus.SubscribeHandler<T>(notification =>
-                                                                         {
-                                                                             result = notification;
-                                                                             _resetEvent.Set();
-                                                                         }, obj => obj.NotificationId == viewId);
-    
-            _resetEvent.Wait(timeoutInSec*1000);
-            cancelSubscription();
+            bool result = false;
+            var cancelSubscription = _serviceBus.SubscribeHandler<ViewUpdated<TView>>(notification => 
+                                    { 
+                                        result = true; 
+                                       _resetEvent.Set();
+                                    }, obj => obj.ViewId == guid);
+
+            _resetEvent.Wait(timeoutInSec * 1000);
+            if( !result)
+            {
+                cancelSubscription();
+            }
             _resetEvent.Reset();
             return result;
-
         }
 
-        public Action SubscribeNotification<T>(Action<T> notificationAction, Guid viewId) where T : Contracts.Notification
+        public void SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView
         {
-            return () => _serviceBus.SubscribeHandler(notificationAction, obj => obj.NotificationId == viewId);
+            _serviceBus.SubscribeHandler<ViewUpdated<TView>>(notification => updateAction(notification.ViewId));
         }
 
-        public void PublishNotification<T>(T notification) where T : Contracts.Notification
+        public void PublishNotification<TView>(ViewUpdated<TView> notification) where TView : IView
         {
             _serviceBus.Publish(notification);
         }

@@ -1,12 +1,14 @@
 using System;
+using VideoHelp.ReadModel.Notification;
 
 namespace VideoHelp.ReadModel.Contracts
 {
     public interface INotificationBus
     {
-        T WaitNotification<T>(Guid viewId, int timeoutInSec = 30) where T : Notification;
-        Action SubscribeNotification<T>(Action<T> notificationAction, Guid viewId) where T : Notification;
+        bool WaitNotification<TView>(Guid viewId, int timeoutInSec = 30) where TView : IView;
 
-        void PublishNotification<T>(T notification) where T : Notification;
+        void SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView;
+
+        void PublishNotification<TView>(ViewUpdated<TView> notification) where TView : IView;
     }
 }

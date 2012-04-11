@@ -1,8 +1,9 @@
 ﻿using System;
+using VideoHelp.ReadModel.Contracts;
 
 namespace VideoHelp.ReadModel.Users
 {
-    public class UserView
+    public class UserView : IView
     {
         public UserView(Guid id, string nick, string fullName, string email)
         {

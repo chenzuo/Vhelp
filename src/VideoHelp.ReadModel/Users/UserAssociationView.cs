@@ -1,9 +1,9 @@
 using System;
-using System.ComponentModel.DataAnnotations;
+using VideoHelp.ReadModel.Contracts;
 
 namespace VideoHelp.ReadModel.Users
 {
-    public class UserAssociationView
+    public class UserAssociationView : IView
     {
         public UserAssociationView(Guid userId, string identity)
         {
@@ -14,7 +14,7 @@ namespace VideoHelp.ReadModel.Users
         public UserAssociationView(){}
 
         public Guid UserId { get; private set; }
-        [StringLength(300)]
+      
         public string Identity { get; private set; }
     }
 }

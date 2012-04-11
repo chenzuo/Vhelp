@@ -1,5 +1,6 @@
 ﻿using VideoHelp.Domain.Messages.Events.Users;
 using VideoHelp.ReadModel.Contracts;
+using VideoHelp.ReadModel.Meeting;
 using VideoHelp.ReadModel.Notification;
 
 namespace VideoHelp.ReadModel.Users
@@ -17,15 +18,20 @@ namespace VideoHelp.ReadModel.Users
 
         public void Handle(UserCreated @event)
         {
-            _writeRepository.Add(new UserView(@event.AggregateId, @event.Nick, @event.FullName, @event.Email));
+            var userView = new UserView(@event.AggregateId, @event.Nick, @event.FullName, @event.Email);
+            _writeRepository.Add(userView);
             _writeRepository.SaveChanges();
+
+            _bus.PublishNotification(new ViewUpdated<UserView>(userView.Id));
         }
 
         public void Handle(UserAssociatedWithIdentity @event)
         {
-            _writeRepository.Add(new UserAssociationView(@event.AggregateId, @event.Identity));
+            var userAssociationView = new UserAssociationView(@event.AggregateId, @event.Identity);
+            _writeRepository.Add(userAssociationView);
             _writeRepository.SaveChanges();
-            _bus.PublishNotification(new UserAssociationUpdated(@event.AggregateId));
+
+            _bus.PublishNotification(new ViewUpdated<UserAssociationView>(userAssociationView.UserId));
         }
     }
 }

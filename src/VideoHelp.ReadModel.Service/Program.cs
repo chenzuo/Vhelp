@@ -60,7 +60,7 @@ namespace VideoHelp.ReadModel.Service
 
             var userEventHandler = new UserEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<INotificationBus>());
             var meetingEventHandler = new MeetingEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>(), _container.Resolve<INotificationBus>());
-            var meetingListEventHandler = new MeetingListEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>());
+            var meetingListEventHandler = new MeetingListEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>(), _container.Resolve<INotificationBus>());
 
             eventBus.RegisterEventHandler<UserCreated>(userEventHandler.Handle);
             eventBus.RegisterEventHandler<UserAssociatedWithIdentity>(userEventHandler.Handle);

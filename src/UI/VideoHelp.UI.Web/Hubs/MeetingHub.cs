@@ -1,37 +1,44 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using SignalR.Hubs;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
+using VideoHelp.ReadModel;
 using VideoHelp.ReadModel.Contracts;
+using VideoHelp.ReadModel.Meeting;
 using VideoHelp.ReadModel.Notification;
 using System.Monads;
 
 namespace VideoHelp.UI.Web.Hubs
 {
-    public class MeetingHub : Hub
+    public class MeetingHub : Hub, IDisconnect, IConnected
     {
         private readonly ICommandBus _commandBus;
         private readonly INotificationBus _notificationBus;
-        private Guid _meetingId;
-        private Action _unsubscribeNotificationAction;
+        private readonly IReadRepository _readRepository;
+
+
 
         public MeetingHub()
         {
             _commandBus = DependencyResolver.Current.GetService<ICommandBus>();
             _notificationBus = DependencyResolver.Current.GetService<INotificationBus>();
+            _readRepository = DependencyResolver.Current.GetService<IReadRepository>();
+
+
+            _notificationBus.SubscribeNotification<MeetingView>(meetingUpdated);
         }
 
-        public void InitializeMeeting(string meetingId, string userId)
+        public void JoinToMeeting(string meetingId, string userId)
         {
-            var newMeeting = new Guid(meetingId);
-            if(newMeeting != Guid.Empty)
-            {
-                _meetingId = newMeeting;
-            }
+           
+        }
 
-            _unsubscribeNotificationAction.Do(action => action());
-            _unsubscribeNotificationAction = _notificationBus.SubscribeNotification<MeetingViewUpdated>(meetingUpdated, _meetingId);
+        private void meetingUpdated(Guid guid)
+        {
+            //Clients.updateMeeting(notification.View);
         }
 
         public void AddCameraStream(string meetingId, string userId, string streamLink)
@@ -39,10 +46,24 @@ namespace VideoHelp.UI.Web.Hubs
             _commandBus.Publish(new CreateCameraStream(new Guid(meetingId), new Guid(userId), streamLink));
         }
 
-        private void meetingUpdated(MeetingViewUpdated notification)
+       
+
+        public Task Disconnect()
         {
-            Clients.updateMeeting(notification.View);
+            
+            return null;
         }
 
+        public Task Connect(IEnumerable<string> groups)
+        {
+            //throw new NotImplementedException();
+            return null;
+        }
+
+        public Task Reconnect(IEnumerable<string> groups)
+        {
+            //throw new NotImplementedException();
+            return null;
+        }
     }
 }
