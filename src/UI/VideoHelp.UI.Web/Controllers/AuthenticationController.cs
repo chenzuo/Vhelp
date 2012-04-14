@@ -32,7 +32,7 @@ namespace VideoHelp.UI.Web.Controllers
 
         public ActionResult Logoff()
         {
-            _commandBus.Publish(new UpdateUserState(UserManager.CurrentUser.Id, DateTime.Now, UserState.Ofline));
+            _commandBus.Publish(new UpdateUserState(UserManager.CurrentUser, DateTime.Now, UserState.Ofline));
             UserManager.Logout();
             return RedirectToAction("Index", "Home");
         }
@@ -68,7 +68,7 @@ namespace VideoHelp.UI.Web.Controllers
             var user = _readRepository.GetById<UserView>(userId);
            
             _commandBus.Publish(new UpdateUserState(user.Id, DateTime.Now, UserState.Online));
-            UserManager.Loggin(user);
+            UserManager.Loggin(user.Id, user.Nick);
             
             
             return RedirectToAction("Index", "Meetings");

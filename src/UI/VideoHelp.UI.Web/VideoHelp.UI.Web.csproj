@@ -16,6 +16,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\src\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,12 +63,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\libs\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR">
-      <HintPath>..\..\..\libs\SignalR.Server.0.4.0.0\lib\net40\SignalR.dll</HintPath>
-    </Reference>
-    <Reference Include="SignalR.Hosting.AspNet">
-      <HintPath>..\..\..\libs\SignalR.Hosting.AspNet.0.4.0.0\lib\net40\SignalR.Hosting.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -221,6 +216,18 @@
     <Content Include="Views\Shared\_LogginDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ExternalSource\SignalR.Hosting.AspNet\SignalR.Hosting.AspNet.csproj">
+      <Project>{0E513AE2-BEA8-40CF-B9F2-102B351F2FB2}</Project>
+      <Name>SignalR.Hosting.AspNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ExternalSource\SignalR.Hosting.Common\SignalR.Hosting.Common.csproj">
+      <Project>{3B71F0AE-D4B6-4F47-BF62-333D45615673}</Project>
+      <Name>SignalR.Hosting.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ExternalSource\SignalR\SignalR.csproj">
+      <Project>{1B9A82C4-BCA1-4834-A33E-226F17BE070B}</Project>
+      <Name>SignalR %28SignalR\SignalR%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VideoHelp.Domain.Messages\VideoHelp.Domain.Messages.csproj">
       <Project>{BE6FD943-C1C8-4684-A8FC-1187D4FE4B7D}</Project>
       <Name>VideoHelp.Domain.Messages</Name>
@@ -263,12 +270,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3026</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:3026/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

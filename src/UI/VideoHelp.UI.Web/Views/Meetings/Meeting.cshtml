@@ -33,9 +33,6 @@
     
 
             <div id="contentArea" >
-              <div class="userContent">...</div>
-              <div class="userContent">...</div>
-              <div class="userContent">...</div>
             </div>
     </div>
 
@@ -85,6 +82,28 @@
             var $box = $('<div class="userContent"/>');
             $('#contentArea').append($box).masonry('appended', $box);
 
+            $box.flash(
+            {
+                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
+                // these arguments will be passed into the flash document
+                quality: 'high',
+                bgcolor: '#000000',
+                width: '320',
+                height: '240',
+                name: 'video-publisher',
+                align: 'middle',
+                wmode: 'transparent',
+                play: 'true',
+                loop: 'false',
+                allowfullscreen: 'true',
+                allowscriptaccess: 'always',
+                flashvars: {
+                                controls: true,
+                                src: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9?publish=fffds'
+                           },
+                type: 'application/x-shockwave-flash',
+                pluginspage: 'http://www.adobe.com/go/getflashplayer'
+            });
         });
 
 
@@ -103,7 +122,7 @@
             if (event.property == "nearID") {
 
                 if (event.objectID == "video-publisher") {
-                    $.connection.meetingHub.addCameraStream('@Model.Id', '@UserManager.CurrentUser.Id', event.newValue);
+                    $.connection.meetingHub.addCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
                 }
             }
         }
@@ -125,10 +144,7 @@
   
 
     //стартуем все хабы
-    $.connection.hub.start(
-        function() {
-            meetingHub.joinToMeeting('@Model.Id', '@UserManager.CurrentUser.Id');
-        });
+    $.connection.hub.start();
 
 
     function getFlashMovie(movieName) {

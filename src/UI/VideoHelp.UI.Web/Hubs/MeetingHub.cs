@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using SignalR;
+using SignalR.Hosting;
 using SignalR.Hubs;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
@@ -50,13 +54,14 @@ namespace VideoHelp.UI.Web.Hubs
 
         public Task Disconnect()
         {
-            
+            Debug.WriteLine("DiСоnnected " + Context.ConnectionId);
             return null;
         }
 
-        public Task Connect(IEnumerable<string> groups)
+
+        public Task Connect()
         {
-            //throw new NotImplementedException();
+            Debug.WriteLine("Соnnected " + Context.ConnectionId);
             return null;
         }
 
@@ -64,6 +69,14 @@ namespace VideoHelp.UI.Web.Hubs
         {
             //throw new NotImplementedException();
             return null;
+        }
+    }
+
+    public class UserConnectionIdFactory : IConnectionIdFactory
+    {
+        public string CreateConnectionId(IRequest request, IPrincipal user)
+        {
+            return UserManager.CurrentUser.ToString();
         }
     }
 }

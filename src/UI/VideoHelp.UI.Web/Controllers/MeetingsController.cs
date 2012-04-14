@@ -33,7 +33,7 @@ namespace VideoHelp.UI.Web.Controllers
         public ActionResult NewMeeting()
         {
             var meetingName = Request.Form["meetingName"];
-            _commandBus.Publish(new CreateMeeting(UserManager.CurrentUser.Id, meetingName));
+            _commandBus.Publish(new CreateMeeting(UserManager.CurrentUser, meetingName));
             return RedirectToAction("Index");
         }
     }
