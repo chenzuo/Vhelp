@@ -11,21 +11,11 @@
 
     <div style="width: 310px; left: 0; top: 40px; bottom: 0; position: absolute; background: #F9F9F9; border-right: 1px solid #CCC; border-right-width: 1px; border-right-style: solid; border-right-color: #CCCCCC;">
         <div class="container-fluid">
-        
             <div class="page-header">
-                <div class="thumbnail" style="background: white;">
-                    <div id="myFlash" style="background: black"> <img src="http://placehold.it/260x180" alt=""> </div>
-                    
-                    <div class="caption">
-                        <p><a href="#" id="createStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Включить</a></p>
-                        <p><a href="#" id="addBox" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Добавить</a></p>
-                    </div>
-                </div>
-                                    
+                 <p><a href="#" id="createStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Включить</a></p>
+                        <p><a href="#" id="addBox" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Добавить</a></p>     
             </div>
-
         </div>
-
     </div>    
     
 
@@ -43,33 +33,7 @@
 
 <script type="text/javascript">
 
-
-
-    $(document).ready(function () {
-        $('#myFlash').flash(
-            {
-                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
-                // these arguments will be passed into the flash document
-                quality: 'high',
-                bgcolor: '#000000',
-                width: '260',
-                height: '180',
-                name: 'video-publisher',
-                align: 'middle',
-                wmode: 'transparent',
-                play: 'true',
-                loop: 'false',
-                allowfullscreen: 'true',
-                allowscriptaccess: 'always',
-                flashvars: 'controls=true',
-                type: 'application/x-shockwave-flash',
-                pluginspage: 'http://www.adobe.com/go/getflashplayer'
-            });
-        });
-
-
-
-        $(function () {
+$(function () {
             $('#contentArea').masonry({
                 // options
                 itemSelector: '.userContent',
@@ -78,7 +42,25 @@
             });
         });
 
-        $("#addBox").click(function () {
+ //получаем прокси объект чат
+    var meetingHub = $.connection.meetingHub;
+
+ 
+
+  
+
+    //стартуем все хабы
+    $.connection.hub.start(function () {
+        meetingHub.joinToMeeting('@Model.Id', '@UserManager.CurrentUser');
+    });
+
+
+    //определяем метод, вызываемый с серверной част,
+    //параметры естественно должы совпадать
+    meetingHub.updateCameraStream = function (userId, farId) {
+
+        if ('@UserManager.CurrentUser' != userId) {
+
             var $box = $('<div class="userContent"/>');
             $('#contentArea').append($box).masonry('appended', $box);
 
@@ -87,70 +69,57 @@
                 swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
                 // these arguments will be passed into the flash document
                 quality: 'high',
+
                 bgcolor: '#000000',
                 width: '320',
                 height: '240',
-                name: 'video-publisher',
-                align: 'middle',
-                wmode: 'transparent',
-                play: 'true',
-                loop: 'false',
                 allowfullscreen: 'true',
                 allowscriptaccess: 'always',
                 flashvars: {
-                                controls: true,
-                                src: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9?publish=fffds'
-                           },
-                type: 'application/x-shockwave-flash',
-                pluginspage: 'http://www.adobe.com/go/getflashplayer'
-            });
-        });
-
-
-    
-
-    $("#createStream").click(function () {
-
-        $('#myFlash').flash(
-            function() {
-                this.setProperty('src','rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9?publish=fffds');
-            });
-        });
-
-        function onPropertyChange(event) {
-            console.log(event.property + " " + event.newValue);
-            if (event.property == "nearID") {
-
-                if (event.objectID == "video-publisher") {
-                    $.connection.meetingHub.addCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
+                    controls: 'true',
+                    url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
+                    play: userId,
+                    farID: farId
+                    
                 }
-            }
+            });
         }
-
-</script>
-
-<script type="text/javascript">
-    var rtmfp = "rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9/";
-
-    //получаем прокси объект чат
-    var meetingHub = $.connection.meetingHub;
-
-        //определяем метод, вызываемый с серверной част,
-        //параметры естественно должы совпадать
-    meetingHub.addVideoStream = function (user, stream) {
-        $("#messages").append("<li>" + msg.name + " : " + msg.text + "</li>");
     };
-
-  
-
-    //стартуем все хабы
-    $.connection.hub.start();
-
-
-    function getFlashMovie(movieName) {
-        var isIE = navigator.appName.indexOf("Microsoft") != -1;
-        return (isIE) ? window[movieName] : document[movieName];
-    }
-  
     
+
+
+
+
+    $("#addBox").click(function () {
+        var $box = $('<div class="userContent"/>');
+        $('#contentArea').append($box).masonry('appended', $box);
+
+        $box.flash(
+            {
+                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
+                // these arguments will be passed into the flash document
+                quality: 'high',
+                bgcolor: '#000000',
+                width: '320',
+                name: 'video-publisher',
+                height: '240',
+                allowfullscreen: 'true',
+                allowscriptaccess: 'always',
+                flashvars: {
+                    controls: 'true',
+                    url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
+                    publish: '@UserManager.CurrentUser'
+                }
+            });
+
+    });
+
+  
+    function onPropertyChange(event) {
+        console.log(event.property + " " + event.newValue);
+        if (event.property == "nearID") {
+            meetingHub.attachCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
+        }
+    }
+
 </script>

@@ -5,10 +5,12 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MassTransit;
 using SignalR;
+using SignalR.Hubs;
 using VideoHelp.Infrastructure;
 using VideoHelp.Infrastructure.Installers;
 using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Infrastructure.Installers;
+using VideoHelp.ReadModel.Meeting;
 using VideoHelp.UI.Domain.LoginzaAuthentication;
 using VideoHelp.UI.Domain.LoginzaAuthentication.ExtractStrategy;
 using System.Linq;
@@ -61,7 +63,15 @@ namespace VideoHelp.UI.Web.AppStart
             _commandBus = _container.Resolve<ICommandBus>();
 	        _notificationBus = _container.Resolve<INotificationBus>();
 
-            Global.DependencyResolver.Register(typeof(IConnectionIdFactory), () => new UserConnectionIdFactory()); 
+            Global.DependencyResolver.Register(typeof(IConnectionIdFactory), () => new UserConnectionIdFactory());
+
+            var connectionManager = Global.DependencyResolver.GetService(typeof(IConnectionManager)) as IConnectionManager;
+
+	        _notificationBus.SubscribeNotification<MeetingView>(guid =>
+	                                                                {
+	                                                                    var clients = connectionManager.GetClients<MeetingHub>();
+                                                                        clients[guid.ToString()].test();
+	                                                                });
 	    }
 
         public static void Stop()

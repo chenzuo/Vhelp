@@ -35,9 +35,11 @@ namespace VideoHelp.ReadModel.Infrastructure
             return result;
         }
 
-        public void SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView
+        public Action SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView
         {
-            _serviceBus.SubscribeHandler<ViewUpdated<TView>>(notification => updateAction(notification.ViewId));
+            var unsubscriber =_serviceBus.SubscribeHandler<ViewUpdated<TView>>(notification => updateAction(notification.ViewId));
+
+            return () => unsubscriber();
         }
 
         public void PublishNotification<TView>(ViewUpdated<TView> notification) where TView : IView

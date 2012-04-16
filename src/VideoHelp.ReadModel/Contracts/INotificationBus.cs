@@ -7,7 +7,7 @@ namespace VideoHelp.ReadModel.Contracts
     {
         bool WaitNotification<TView>(Guid viewId, int timeoutInSec = 30) where TView : IView;
 
-        void SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView;
+        Action SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView;
 
         void PublishNotification<TView>(ViewUpdated<TView> notification) where TView : IView;
     }

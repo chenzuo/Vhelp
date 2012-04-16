@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CreateCameraStream.cs" />
+    <Compile Include="Commands\AttachCameraStream.cs" />
     <Compile Include="Commands\UpdateUserState.cs" />
     <Compile Include="DomainCommand.cs" />
     <Compile Include="CommandResult.cs" />

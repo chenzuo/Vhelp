@@ -22,7 +22,7 @@ namespace VideoHelp.UI.Web.Hubs
         private readonly ICommandBus _commandBus;
         private readonly INotificationBus _notificationBus;
         private readonly IReadRepository _readRepository;
-
+        private Action _cancelNotification;
 
 
         public MeetingHub()
@@ -31,13 +31,12 @@ namespace VideoHelp.UI.Web.Hubs
             _notificationBus = DependencyResolver.Current.GetService<INotificationBus>();
             _readRepository = DependencyResolver.Current.GetService<IReadRepository>();
 
-
-            _notificationBus.SubscribeNotification<MeetingView>(meetingUpdated);
+            
         }
 
         public void JoinToMeeting(string meetingId, string userId)
         {
-           
+            GroupManager.AddToGroup(Context.ConnectionId, meetingId);   
         }
 
         private void meetingUpdated(Guid guid)
@@ -45,9 +44,10 @@ namespace VideoHelp.UI.Web.Hubs
             //Clients.updateMeeting(notification.View);
         }
 
-        public void AddCameraStream(string meetingId, string userId, string streamLink)
+        public void AttachCameraStream(string meetingId, string userId, string farId)
         {
-            _commandBus.Publish(new CreateCameraStream(new Guid(meetingId), new Guid(userId), streamLink));
+            Clients.updateCameraStream(userId, farId);
+            //_commandBus.Publish(new AttachCameraStream(new Guid(meetingId), new Guid(userId), "fd"));
         }
 
        

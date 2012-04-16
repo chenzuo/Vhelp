@@ -30,7 +30,7 @@ namespace VideoHelp.Infrastructure.Installers
 
             bus.RegisterCommandHandler<CreateMeeting>(meetingCommandHandler);
 
-            bus.RegisterCommandHandler<CreateCameraStream>(mediaContentCommandHandler);
+            bus.RegisterCommandHandler<AttachCameraStream>(mediaContentCommandHandler);
         }
     }
 }

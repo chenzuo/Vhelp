@@ -4,9 +4,9 @@ using System.Runtime.Serialization;
 namespace VideoHelp.Domain.Messages.Commands
 {
     [DataContract]
-    public class CreateCameraStream : DomainCommand
+    public class AttachCameraStream : DomainCommand
     {
-        public CreateCameraStream(Guid meetingId, Guid userId, String streamLink)
+        public AttachCameraStream(Guid meetingId, Guid userId, String streamLink)
             : base(Guid.NewGuid())
         {
             UserId = userId;
