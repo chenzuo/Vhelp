@@ -14,6 +14,7 @@ using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Meeting;
 using VideoHelp.ReadModel.Notification;
 using System.Monads;
+using System.Linq;
 
 namespace VideoHelp.UI.Web.Hubs
 {
@@ -36,7 +37,14 @@ namespace VideoHelp.UI.Web.Hubs
 
         public void JoinToMeeting(string meetingId, string userId)
         {
-            GroupManager.AddToGroup(Context.ConnectionId, meetingId);   
+            GroupManager.AddToGroup(Context.ConnectionId, meetingId);
+            var userGuid = new Guid(userId);
+            var meetingGuid = new Guid(meetingId);
+            var cameraStreams = _readRepository.GetById<MeetingView>(meetingGuid).MediaContents.Where(content => content.OwnerUser != userGuid).OfType<CameraStream>();
+            foreach (var stream in cameraStreams)
+            {
+                Clients[meetingId].updateCameraStream(stream.OwnerUser, stream.StreamLink);
+            }
         }
 
         private void meetingUpdated(Guid guid)
@@ -46,8 +54,8 @@ namespace VideoHelp.UI.Web.Hubs
 
         public void AttachCameraStream(string meetingId, string userId, string farId)
         {
-            Clients.updateCameraStream(userId, farId);
-            //_commandBus.Publish(new AttachCameraStream(new Guid(meetingId), new Guid(userId), "fd"));
+            Clients[meetingId].updateCameraStream(userId, farId);
+            _commandBus.Publish(new AttachCameraStream(new Guid(meetingId), new Guid(userId), farId));
         }
 
        

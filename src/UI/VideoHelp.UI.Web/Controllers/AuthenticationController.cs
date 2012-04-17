@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
 using VideoHelp.ReadModel.Contracts;
-using VideoHelp.ReadModel.Notification;
 using VideoHelp.ReadModel.Users;
 using VideoHelp.UI.Domain;
 using VideoHelp.UI.Domain.LoginzaAuthentication;

@@ -3,6 +3,7 @@ using VideoHelp.Domain.Messages.Events.MediaContent;
 using VideoHelp.Domain.Messages.Events.Meeting;
 using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Notification;
+using System.Linq;
 
 namespace VideoHelp.ReadModel.Meeting
 {
@@ -30,6 +31,12 @@ namespace VideoHelp.ReadModel.Meeting
         public void Handle(CameraStreamCreated @event)
         {
             var meeting =_readRepository.GetById<MeetingView>(@event.MeetingId);
+
+            var toRemoteContent = meeting.MediaContents.OfType<CameraStream>().Where(content => content.OwnerUser == @event.OwnerUser);
+            foreach (var remoteItem in toRemoteContent)
+            {
+                meeting.MediaContents.Remove(remoteItem);
+            }
 
             meeting.MediaContents.Add( new CameraStream(@event.AggregateId, @event.OwnerUser, @event.StreamLink));
             _readRepository.SaveChanges();
