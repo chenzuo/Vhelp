@@ -166,6 +166,7 @@
     <Content Include="Scripts\jquery.signalR.js" />
     <Content Include="Scripts\jquery.signalR.min.js" />
     <Content Include="Scripts\jquery.swfobject.1-1-1.min.js" />
+    <Content Include="Scripts\jquery.tmpl.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -173,8 +174,10 @@
     <Content Include="Scripts\json2.min.js" />
     <Content Include="Scripts\knockout.debug.js" />
     <Content Include="Scripts\knockout.js" />
+    <Content Include="Scripts\ko.mustache.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\mustache.js" />
     <Content Include="Scripts\swfobject.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -270,7 +273,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3026</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
