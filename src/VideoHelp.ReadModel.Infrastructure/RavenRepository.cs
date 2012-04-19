@@ -4,11 +4,11 @@ using Raven.Client;
 
 namespace VideoHelp.ReadModel.Infrastructure
 {
-    public class RavenReadRepository : IReadRepository, IDisposable
+    public class RavenRepository : IRepository
     {
         private readonly IDocumentSession _session;
 
-        public RavenReadRepository(IDocumentStore documentStore)
+        public RavenRepository(IDocumentStore documentStore)
         {
             _session = documentStore.OpenSession();
         }
@@ -23,13 +23,14 @@ namespace VideoHelp.ReadModel.Infrastructure
             return _session.Load<T>(id);
         }
 
-        public void SaveChanges()
+        public void Store<T>(T value) where T : class
         {
-            _session.SaveChanges();
+            _session.Store(value);
         }
 
         public void Dispose()
         {
+            _session.SaveChanges();
             _session.Dispose();
         }
     }

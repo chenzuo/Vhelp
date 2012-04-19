@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace VideoHelp.ReadModel
 {
-    public interface IReadRepository
+    public interface IRepository : IDisposable
     {
         IQueryable<T> GetAll<T>() where T : class;
         T GetById<T>(Guid id) where T : class;
-        void SaveChanges();
+        void Store<T>(T value) where T : class;
     }
 }

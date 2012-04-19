@@ -121,12 +121,10 @@
     <Compile Include="Installers\NotificationBusInstaller.cs" />
     <Compile Include="NotificationBus.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
-    <Compile Include="Installers\ReadRepositoryInstaller.cs" />
-    <Compile Include="Installers\WriteRepositoryInstaller.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Installers\RavenRepositoryFactoryInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RavenReadRepository.cs" />
-    <Compile Include="RavenWriteRepository.cs" />
+    <Compile Include="RavenRepository.cs" />
+    <Compile Include="RavenRepositoryFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

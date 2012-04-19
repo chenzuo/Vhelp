@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="Contracts\INotification.cs" />
     <Compile Include="Contracts\INotificationBus.cs" />
-    <Compile Include="IWriteRepository.cs" />
+    <Compile Include="IRepositoryFactory.cs" />
     <Compile Include="Contracts\IView.cs" />
     <Compile Include="Meeting\CameraStream.cs" />
     <Compile Include="Meeting\MeetingCameraStreamsView.cs" />
@@ -54,7 +54,7 @@
     <Compile Include="Users\UserAssociationView.cs" />
     <Compile Include="Users\UserEventHandler.cs" />
     <Compile Include="Users\UserView.cs" />
-    <Compile Include="IReadRepository.cs" />
+    <Compile Include="IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VideoHelp.Domain.Messages\VideoHelp.Domain.Messages.csproj">

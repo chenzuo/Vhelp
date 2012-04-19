@@ -8,48 +8,48 @@ namespace VideoHelp.ReadModel.Meeting
 {
     public class MeetingEventHandler
     {
-        private readonly IWriteRepository _writeRepository;
-        private readonly IReadRepository _readRepository;
+        private readonly IRepositoryFactory _repositoryFactory;
         private readonly INotificationBus _notificationBus;
 
-        public MeetingEventHandler(IWriteRepository writeRepository, IReadRepository readRepository, INotificationBus notificationBus)
+        public MeetingEventHandler(IRepositoryFactory repositoryFactory, INotificationBus notificationBus)
         {
-            _writeRepository = writeRepository;
-            _readRepository = readRepository;
+            _repositoryFactory = repositoryFactory;
             _notificationBus = notificationBus;
         }
 
         public void Handle(MeetingCreated @event)
         {
             var meeting = new MeetingView(@event.AggregateId, @event.OwnerId, @event.Name, @event.CreationDate);
-            _writeRepository.Add(meeting);
-            _writeRepository.SaveChanges();
+            using (var repository = _repositoryFactory.Create())
+            {
+                repository.Store(meeting);
+            }
+
             _notificationBus.PublishNotification(new ViewUpdated<MeetingView>(meeting.Id));
         }
 
         public void Handle(CameraStreamCreated @event)
         {
-            var meetingStreams =_readRepository.GetById<MeetingCameraStreamsView>(@event.MeetingId);
-            
-            if(meetingStreams == null)
+            MeetingCameraStreamsView meetingStreams;
+            using (var repository = _repositoryFactory.Create())
             {
-                meetingStreams = new MeetingCameraStreamsView(@event.MeetingId);
-                meetingStreams.CameraStreams.Add(new CameraStream(@event.OwnerUser, @event.StreamLink));
-                _writeRepository.Add(meetingStreams);
-                _writeRepository.SaveChanges();
-            }
-            else
-            {
-                var toRemoteContent = meetingStreams.CameraStreams.Where(content => content.OwnerUser == @event.OwnerUser);
+                meetingStreams = repository.GetById<MeetingCameraStreamsView>(@event.MeetingId);
+                if(meetingStreams == null)
+                {
+                    meetingStreams = new MeetingCameraStreamsView(@event.MeetingId);
+                    repository.Store(meetingStreams);
+                }
+
+                var toRemoteContent = meetingStreams.CameraStreams.Where(content => content.OwnerUser == @event.OwnerUser).ToList();
                 foreach (var remoteItem in toRemoteContent)
                 {
                     meetingStreams.CameraStreams.Remove(remoteItem);
                 }
 
                 meetingStreams.CameraStreams.Add(new CameraStream(@event.OwnerUser, @event.StreamLink));
-                _readRepository.SaveChanges();
+
             }
-            
+
             _notificationBus.PublishNotification(new ViewUpdated<MeetingCameraStreamsView>(meetingStreams.Id));
         } 
     }

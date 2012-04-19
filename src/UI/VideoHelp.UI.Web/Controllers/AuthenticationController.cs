@@ -15,14 +15,14 @@ namespace VideoHelp.UI.Web.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly IReadRepository _readRepository;
+        private readonly IRepositoryFactory _repositoryFactory;
         private readonly INotificationBus _notificationBus;
         private readonly ICommandBus _commandBus;
         private readonly AccountInformationExtractor _accountInformationExtractor;
 
-        public AuthenticationController(AccountInformationExtractor accountInformationExtractor, ICommandBus commandBus, IReadRepository readRepository, INotificationBus notificationBus)
+        public AuthenticationController(AccountInformationExtractor accountInformationExtractor, ICommandBus commandBus, IRepositoryFactory repositoryFactory, INotificationBus notificationBus)
         {
-            _readRepository = readRepository;
+            _repositoryFactory = repositoryFactory;
             _notificationBus = notificationBus;
             _commandBus = commandBus.CheckNull("commandBus");
             _accountInformationExtractor = accountInformationExtractor.CheckNull("accountInformationExtractor");
@@ -63,8 +63,13 @@ namespace VideoHelp.UI.Web.Controllers
                 }
             }
 
-            var user = _readRepository.GetById<UserView>(userId);
-           
+            UserView user;
+
+            using (var repository = _repositoryFactory.Create())
+            {
+                user = repository.GetById<UserView>(userId);
+            }
+
             _commandBus.Publish(new UpdateUserState(user.Id, DateTime.Now, UserState.Online));
             UserManager.Loggin(user.Id, user.Nick);
             
@@ -74,7 +79,10 @@ namespace VideoHelp.UI.Web.Controllers
 
         private UserAssociationView geUsertAssociationWith(AccountInformation account)
         {
-            return _readRepository.GetAll<UserAssociationView>().FirstOrDefault(identity => identity.Identity == account.Identity.ToLower());
+            using (var repository = _repositoryFactory.Create())
+            {
+                return repository.GetAll<UserAssociationView>().FirstOrDefault(identity => identity.Identity == account.Identity.ToLower());
+            }
         }
     }
 }

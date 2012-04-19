@@ -21,18 +21,13 @@ namespace VideoHelp.UI.Web.Hubs
     public class MeetingHub : Hub, IDisconnect, IConnected
     {
         private readonly ICommandBus _commandBus;
-        private readonly INotificationBus _notificationBus;
-        private readonly IReadRepository _readRepository;
-        private Action _cancelNotification;
+        private readonly IRepositoryFactory _repositoryFactory;
 
 
         public MeetingHub()
         {
             _commandBus = DependencyResolver.Current.GetService<ICommandBus>();
-            _notificationBus = DependencyResolver.Current.GetService<INotificationBus>();
-            _readRepository = DependencyResolver.Current.GetService<IReadRepository>();
-
-            
+            _repositoryFactory = DependencyResolver.Current.GetService<IRepositoryFactory>();
         }
 
         public void JoinToMeeting(string meetingId, string userId)
@@ -41,15 +36,19 @@ namespace VideoHelp.UI.Web.Hubs
             var userGuid = new Guid(userId);
             var meetingGuid = new Guid(meetingId);
 
-            var streams = _readRepository.GetById<MeetingCameraStreamsView>(meetingGuid);
-            if(streams == null)
+            using (var repository = _repositoryFactory.Create())
             {
-                return;
-            }
+                var streams = repository.GetById<MeetingCameraStreamsView>(meetingGuid);
+                if (streams == null)
+                {
+                    return;
+                }
 
-            foreach (var stream in streams.CameraStreams.Where(content => content.OwnerUser != userGuid))
-            {
-                Clients[meetingId].updateCameraStream(stream.OwnerUser, stream.StreamLink);
+                foreach (var stream in streams.CameraStreams.Where(content => content.OwnerUser != userGuid))
+                {
+                    Clients[meetingId].updateCameraStream(stream.OwnerUser, stream.StreamLink);
+                }
+
             }
         }
 

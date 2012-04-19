@@ -49,8 +49,7 @@ namespace VideoHelp.ReadModel.Service
                     new TransportBusInstaller(new Uri(ConfigurationManager.AppSettings["EndpointUri"])),
                     new EventBusInstaller(),
                     new RavenInstaller(),
-                    new ReadRepositoryInstaller(),
-                    new WriteRepositoryInstaller(),
+                    new RavenRepositoryFactoryInstaller(),
                     new NotificationBusInstaller()
                     );
 
@@ -58,9 +57,9 @@ namespace VideoHelp.ReadModel.Service
 
             var eventBus = _container.Resolve<IEventBus>();
 
-            var userEventHandler = new UserEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<INotificationBus>());
-            var meetingEventHandler = new MeetingEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>(), _container.Resolve<INotificationBus>());
-            var meetingListEventHandler = new MeetingListEventHandler(_container.Resolve<IWriteRepository>(), _container.Resolve<IReadRepository>(), _container.Resolve<INotificationBus>());
+            var userEventHandler = new UserEventHandler(_container.Resolve<IRepositoryFactory>(), _container.Resolve<INotificationBus>());
+            var meetingEventHandler = new MeetingEventHandler(_container.Resolve<IRepositoryFactory>(), _container.Resolve<INotificationBus>());
+            var meetingListEventHandler = new MeetingListEventHandler(_container.Resolve<IRepositoryFactory>(), _container.Resolve<INotificationBus>());
 
             eventBus.RegisterEventHandler<UserCreated>(userEventHandler.Handle);
             eventBus.RegisterEventHandler<UserAssociatedWithIdentity>(userEventHandler.Handle);

@@ -5,12 +5,12 @@ using Raven.Client;
 
 namespace VideoHelp.ReadModel.Infrastructure.Installers
 {
-    public class WriteRepositoryInstaller : IWindsorInstaller
+    public class RavenRepositoryFactoryInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            var repository = new RavenWriteRepository(container.Resolve<IDocumentStore>());
-            container.Register(Component.For<IWriteRepository>().Instance(repository));
+            var factory = new RavenRepositoryFactory(container.Resolve<IDocumentStore>());
+            container.Register(Component.For<IRepositoryFactory>().Instance(factory));
         }
     }
 }

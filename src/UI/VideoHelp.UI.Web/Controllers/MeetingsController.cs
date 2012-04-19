@@ -9,24 +9,29 @@ namespace VideoHelp.UI.Web.Controllers
 {
     public class MeetingsController : Controller
     {
-        private readonly IReadRepository _repository;
+        private readonly IRepositoryFactory _repositoryFactory;
         private readonly ICommandBus _commandBus;
 
-        public MeetingsController(IReadRepository repository, ICommandBus commandBus)
+        public MeetingsController(IRepositoryFactory repositoryFactory, ICommandBus commandBus)
         {
-            _repository = repository;
+            _repositoryFactory = repositoryFactory;
             _commandBus = commandBus;
         }
 
         public ActionResult Index()
         {
-            return View(_repository.GetAll<MeetingListView>());
+            using (var repository = _repositoryFactory.Create())
+            {
+                return View(repository.GetAll<MeetingListView>());
+            }
         }
 
         public ActionResult Meeting(Guid meetingId)
         {
-            var meeting = _repository.GetById<MeetingView>(meetingId);
-            return View(meeting);
+            using (var repository = _repositoryFactory.Create())
+            {
+                return View(repository.GetById<MeetingView>(meetingId));
+            }
         }
 
         [HttpPost]
