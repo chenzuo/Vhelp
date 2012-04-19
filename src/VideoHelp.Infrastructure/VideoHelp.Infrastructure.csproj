@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AsyncCtpLibrary">
-      <HintPath>..\..\libs\RavenDB.1.0.701\lib\net40\AsyncCtpLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\..\libs\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
@@ -77,17 +74,20 @@
     <Reference Include="NLog">
       <HintPath>..\..\libs\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\libs\RavenDB.1.0.701\lib\net40\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\libs\RavenDB.1.0.888\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Debug">
-      <HintPath>..\..\libs\RavenDB.1.0.701\lib\net40\Raven.Client.Debug.dll</HintPath>
+    <Reference Include="Raven.Client.Debug, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\libs\RavenDB.1.0.888\lib\net40\Raven.Client.Debug.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\libs\RavenDB.1.0.701\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\libs\RavenDB.1.0.888\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.MvcIntegration">
-      <HintPath>..\..\libs\RavenDB.1.0.701\lib\net40\Raven.Client.MvcIntegration.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight.FSharp">
+      <HintPath>..\..\libs\RavenDB.1.0.888\lib\net40\Raven.Client.Lightweight.FSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.MvcIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\libs\RavenDB.1.0.888\lib\net40\Raven.Client.MvcIntegration.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
