@@ -1,5 +1,4 @@
-﻿using System;
-using VideoHelp.Domain.Messages.Events.MediaContent;
+﻿using VideoHelp.Domain.Messages.Events.MediaContent;
 using VideoHelp.Domain.Messages.Events.Meeting;
 using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Notification;
@@ -30,27 +29,30 @@ namespace VideoHelp.ReadModel.Meeting
 
         public void Handle(CameraStreamCreated @event)
         {
-            var meeting =_readRepository.GetById<MeetingView>(@event.MeetingId);
-
-            var toRemoteContent = meeting.MediaContents.OfType<CameraStream>().Where(content => content.OwnerUser == @event.OwnerUser);
-            foreach (var remoteItem in toRemoteContent)
+            var meetingStreams =_readRepository.GetById<MeetingCameraStreamsView>(@event.MeetingId);
+            
+            if(meetingStreams == null)
             {
-                meeting.MediaContents.Remove(remoteItem);
+                meetingStreams = new MeetingCameraStreamsView(@event.MeetingId);
+                meetingStreams.CameraStreams.Add(new CameraStream(@event.OwnerUser, @event.StreamLink));
+                _writeRepository.Add(meetingStreams);
+                _writeRepository.SaveChanges();
             }
+            else
+            {
+                var toRemoteContent = meetingStreams.CameraStreams.Where(content => content.OwnerUser == @event.OwnerUser);
+                foreach (var remoteItem in toRemoteContent)
+                {
+                    meetingStreams.CameraStreams.Remove(remoteItem);
+                }
 
-            meeting.MediaContents.Add( new CameraStream(@event.AggregateId, @event.OwnerUser, @event.StreamLink));
-            _readRepository.SaveChanges();
-            _notificationBus.PublishNotification(new ViewUpdated<MeetingView>(meeting.Id));
+                meetingStreams.CameraStreams.Add(new CameraStream(@event.OwnerUser, @event.StreamLink));
+                _readRepository.SaveChanges();
+            }
+            
+            _notificationBus.PublishNotification(new ViewUpdated<MeetingCameraStreamsView>(meetingStreams.Id));
         } 
     }
 
-    public class CameraStream : MediaContent
-    {
-        public CameraStream(Guid id, Guid ownerUser, string streamLink) : base(id, ownerUser)
-        {
-            StreamLink = streamLink;
-        }
-
-        public string StreamLink { get; private set; }
-    }
+   
 }

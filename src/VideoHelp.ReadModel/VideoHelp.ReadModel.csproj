@@ -43,8 +43,9 @@
     <Compile Include="Contracts\INotificationBus.cs" />
     <Compile Include="IWriteRepository.cs" />
     <Compile Include="Contracts\IView.cs" />
+    <Compile Include="Meeting\CameraStream.cs" />
+    <Compile Include="Meeting\MeetingCameraStreamsView.cs" />
     <Compile Include="Notification\ViewUpdated.cs" />
-    <Compile Include="Meeting\IMediaContent.cs" />
     <Compile Include="Meeting\MeetingEventHandler.cs" />
     <Compile Include="Meeting\MeetingListEventHandler.cs" />
     <Compile Include="Meeting\MeetingListView.cs" />

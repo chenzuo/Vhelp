@@ -40,17 +40,19 @@ namespace VideoHelp.UI.Web.Hubs
             GroupManager.AddToGroup(Context.ConnectionId, meetingId);
             var userGuid = new Guid(userId);
             var meetingGuid = new Guid(meetingId);
-            var cameraStreams = _readRepository.GetById<MeetingView>(meetingGuid).MediaContents.Where(content => content.OwnerUser != userGuid).OfType<CameraStream>();
-            foreach (var stream in cameraStreams)
+
+            var streams = _readRepository.GetById<MeetingCameraStreamsView>(meetingGuid);
+            if(streams == null)
+            {
+                return;
+            }
+
+            foreach (var stream in streams.CameraStreams.Where(content => content.OwnerUser != userGuid))
             {
                 Clients[meetingId].updateCameraStream(stream.OwnerUser, stream.StreamLink);
             }
         }
 
-        private void meetingUpdated(Guid guid)
-        {
-            //Clients.updateMeeting(notification.View);
-        }
 
         public void AttachCameraStream(string meetingId, string userId, string farId)
         {
@@ -58,7 +60,6 @@ namespace VideoHelp.UI.Web.Hubs
             _commandBus.Publish(new AttachCameraStream(new Guid(meetingId), new Guid(userId), farId));
         }
 
-       
 
         public Task Disconnect()
         {

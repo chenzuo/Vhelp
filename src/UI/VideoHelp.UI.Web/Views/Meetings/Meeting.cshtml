@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="page-header">
                             
-                <p><a href="#" id="addBox" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Добавить</a></p>     
+                <p><a href="#" id="addBox" data-bind="click: createOwnerVideoStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Добавить</a></p>     
             </div>
         </div>
     </div>    
@@ -42,7 +42,7 @@
 </script>
 
 <script type="text/javascript">
-    
+
     $(function () {
         $('#contentArea').masonry({
             // options
@@ -54,22 +54,42 @@
 
 
     var viewModel = {
-        videoStreams: ko.observableArray(
-            [
-                { userId: "Bungle", farId: "Bear" },
-                { userId: "Bungle1", farId: "Bear2" }
-            ]),
+        videoStreams: ko.observableArray([]),
 
         userId: ko.observable("fsdfsd"),
         farID: ko.observable(4343),
 
+        createOwnerVideoStream : function() {
+            var $contentBox = $('<div class="userContent"/>');
+            $('#contentArea').append($contentBox).masonry('appended', $contentBox);
+
+            $contentBox.flash(
+            {
+                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
+                // these arguments will be passed into the flash document
+                quality: 'high',
+                bgcolor: '#000000',
+                width: '320',
+                name: 'video-publisher',
+                height: '240',
+                allowfullscreen: 'true',
+                allowscriptaccess: 'always',
+                flashvars: {
+                    controls: 'true',
+                    url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
+                    publish: '@UserManager.CurrentUser'
+                }
+            });
+        },
+
         attachVideoStream: function (elements) {
-            var videoPlayerDiv = $(elements[0]);
+            var $contentBox = $(elements[0]);
+            $('#contentArea').masonry('appended', $contentBox);
             
-            var userId = videoPlayerDiv.data('userid');
-            var farId = videoPlayerDiv.data('farid');
+            var userId = $contentBox.data('userid');
+            var farId = $contentBox.data('farid');
             
-            videoPlayerDiv.flash(
+            $contentBox.flash(
             {
                 swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
                 // these arguments will be passed into the flash document
@@ -92,43 +112,47 @@
 
     ko.applyBindings(viewModel);
 
+    var meetingHub = $.connection.meetingHub;
 
-    $(function () {
+    meetingHub.updateCameraStream = function (userId, farId) {
 
-        $("#contentArea").bind("change", function () {
-            alert('The value of input #');
-        });
+        if ('@UserManager.CurrentUser' != userId) {
+            viewModel.videoStreams.push({ userId: userId, farId: farId }); 
+        }
+    };
 
-        $('.userContent').live('change', function () {
-            //var element_id = this.id;
-            var userId = $(this).data('userId');
-            var farId = $(this).data('farId');
-
-            alert('The value of input #' + this.id + ' is: ' + userId + ' ' + farId);
-        });
+    //стартуем все хабы
+    $.connection.hub.start(function () {
+        meetingHub.joinToMeeting('@Model.Id', '@UserManager.CurrentUser');
     });
-    
+
+    function onPropertyChange(event) {
+        console.log(event.property + " " + event.newValue);
+        if (event.property == "nearID") {
+            meetingHub.attachCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
+        }
+    }
+
+ 
 </script>​
 
 
 @*​
 
-
+  
+    
 
 
 
  //получаем прокси объект чат
-    var meetingHub = $.connection.meetingHub;
+   
 
 
 
 
   
 
-    //стартуем все хабы
-    $.connection.hub.start(function () {
-        meetingHub.joinToMeeting('@Model.Id', '@UserManager.CurrentUser');
-    });
+   
 
 
     //определяем метод, вызываемый с серверной част,
