@@ -15,17 +15,17 @@ namespace VideoHelp.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             var eventStore = getInitializedEventStore(new DispatchCommits(container.Resolve<IServiceBus>()));
-            container.Register(Component.For<IStoreEvents>().Instance(eventStore));
+            container.Register(Component.For<IStoreEvents>().Instance(eventStore).LifeStyle.Singleton);
 
             var repository = new EventStoreRepository(eventStore, new AggregateFactory(), new ConflictDetector());
-            container.Register(Component.For<IRepository>().Instance(repository));
+            container.Register(Component.For<IRepository>().Instance(repository).LifeStyle.Singleton);
         }
 
         private IStoreEvents getInitializedEventStore(IDispatchCommits dispatchCommits)
         {
             return Wireup.Init()
                 .UsingRavenPersistence("Raven")
-                .UsingSynchronousDispatchScheduler(dispatchCommits)
+                .UsingAsynchronousDispatchScheduler(dispatchCommits)
                 .Build();
         }
     }

@@ -11,7 +11,7 @@ namespace VideoHelp.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             var bus = new MassTransitCommandBus(container.Resolve<IServiceBus>());
-            container.Register(Component.For<ICommandBus>().Instance(bus));
+            container.Register(Component.For<ICommandBus>().Instance(bus).LifeStyle.Singleton);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace VideoHelp.ReadModel.Infrastructure.Installers
             var documentStore = new DocumentStore { ConnectionStringName = "Raven" };
             documentStore.Initialize();
 
-            container.Register(Component.For<IDocumentStore>().Instance(documentStore));
+            container.Register(Component.For<IDocumentStore>().Instance(documentStore).LifeStyle.Singleton);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace VideoHelp.ReadModel.Infrastructure.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             var bus = new NotificationBus(container.Resolve<IServiceBus>());
-            container.Register(Component.For<INotificationBus>().Instance(bus));
+            container.Register(Component.For<INotificationBus>().Instance(bus).LifeStyle.Singleton);
         }
     }
 }

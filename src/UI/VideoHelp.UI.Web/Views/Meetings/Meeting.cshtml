@@ -100,7 +100,6 @@
                 bgcolor: '#000000',
                 width: '320',
                 height: '240',
-                name: 'videoViewer',
                 allowfullscreen: 'true',
                 allowscriptaccess: 'always',
                 flashvars: {
@@ -131,7 +130,7 @@
 
     function onPropertyChange(event) {
         console.log(event.property + " " + event.newValue);
-        if (event.property == "nearID") {
+        if (event.property == "nearID" && event.objectID == "video-publisher") {
             meetingHub.attachCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
         }
     }
