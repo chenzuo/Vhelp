@@ -46,7 +46,7 @@ namespace VideoHelp.UI.Web.Hubs
 
                 foreach (var stream in streams.CameraStreams.Where(content => content.OwnerUser != userGuid))
                 {
-                    Clients[meetingId].updateCameraStream(stream.OwnerUser, stream.StreamLink);
+                    Caller.updateCameraStream(stream.OwnerUser, stream.StreamLink);
                 }
 
             }

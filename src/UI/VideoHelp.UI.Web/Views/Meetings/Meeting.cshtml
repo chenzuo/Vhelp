@@ -6,13 +6,11 @@
 }
 
 
-
-
 <div style="width: 310px; left: 0; top: 40px; bottom: 0; position: absolute; background: #F9F9F9; border-right: 1px solid #CCC; border-right-width: 1px; border-right-style: solid; border-right-color: #CCCCCC;">
         <div class="container-fluid">
             <div class="page-header">
                             
-                <p><a href="#" id="addBox" data-bind="click: createOwnerVideoStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Добавить</a></p>     
+                <p><a href="#" id="addBox" data-bind="click: createOwnerVideoStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i>  Включить</a></p>     
             </div>
         </div>
     </div>    
@@ -65,7 +63,7 @@
 
             $contentBox.flash(
             {
-                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
+                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
                 // these arguments will be passed into the flash document
                 quality: 'high',
                 bgcolor: '#000000',
@@ -77,7 +75,12 @@
                 flashvars: {
                     controls: 'true',
                     url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
-                    publish: '@UserManager.CurrentUser'
+                    publish: '@UserManager.CurrentUser',                               
+                    cameraFPS: 25,
+                    cameraWidth: 640,
+                    cameraHeight: 480,
+                    cameraQuality: 90,
+                    smoothing: true
                 }
             });
         },
@@ -91,20 +94,20 @@
             
             $contentBox.flash(
             {
-                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
+                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
                 // these arguments will be passed into the flash document
                 quality: 'high',
-
                 bgcolor: '#000000',
                 width: '320',
                 height: '240',
+                name: 'videoViewer',
                 allowfullscreen: 'true',
                 allowscriptaccess: 'always',
                 flashvars: {
                     controls: 'true',
                     url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
                     play: userId,
-                    farID: farId
+                    farID: farId                   
                 }
             });
         }
@@ -132,96 +135,5 @@
             meetingHub.attachCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
         }
     }
-
  
 </script>​
-
-
-@*​
-
-  
-    
-
-
-
- //получаем прокси объект чат
-   
-
-
-
-
-  
-
-   
-
-
-    //определяем метод, вызываемый с серверной част,
-    //параметры естественно должы совпадать
-    meetingHub.updateCameraStream = function (userId, farId) {
-
-        if ('@UserManager.CurrentUser' != userId) {
-
-            var $box = $('<div class="userContent"/>');
-            $('#contentArea').append($box).masonry('appended', $box);
-
-            $box.flash(
-            {
-                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
-                // these arguments will be passed into the flash document
-                quality: 'high',
-
-                bgcolor: '#000000',
-                width: '320',
-                height: '240',
-                allowfullscreen: 'true',
-                allowscriptaccess: 'always',
-                flashvars: {
-                    controls: 'true',
-                    url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
-                    play: userId,
-                    farID: farId
-                    
-                }
-            });
-        }
-    };
-    
-
-
-
-
-    $("#addBox").click(function () {
-        var $box = $('<div class="userContent"/>');
-        $('#contentArea').append($box).masonry('appended', $box);
-
-        $box.flash(
-            {
-                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
-                // these arguments will be passed into the flash document
-                quality: 'high',
-                bgcolor: '#000000',
-                width: '320',
-                name: 'video-publisher',
-                height: '240',
-                allowfullscreen: 'true',
-                allowscriptaccess: 'always',
-                flashvars: {
-                    controls: 'true',
-                    url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
-                    publish: '@UserManager.CurrentUser'
-                }
-            });
-
-    });
-
-  
-    function onPropertyChange(event) {
-        console.log(event.property + " " + event.newValue);
-        if (event.property == "nearID") {
-            meetingHub.attachCameraStream('@Model.Id', '@UserManager.CurrentUser', event.newValue);
-        }
-    }
-
-</script>
-
-*@
