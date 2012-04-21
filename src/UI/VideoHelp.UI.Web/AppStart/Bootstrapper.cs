@@ -44,9 +44,7 @@ namespace VideoHelp.UI.Web.AppStart
                     new NotificationBusInstaller()
                 );
 
-            _container.Register(Classes.FromThisAssembly()
-                            .BasedOn<IController>()
-                            .LifestyleTransient());
+            _container.Register(Classes.FromThisAssembly().BasedOn<IController>().LifestyleTransient());
 
             _container.Register(Component.For<IWindsorContainer>().Instance(_container));
 
@@ -65,18 +63,10 @@ namespace VideoHelp.UI.Web.AppStart
 
             Global.DependencyResolver.Register(typeof(IConnectionIdFactory), () => new UserConnectionIdFactory());
 
-            var connectionManager = Global.DependencyResolver.GetService(typeof(IConnectionManager)) as IConnectionManager;
-
-	        _notificationBus.SubscribeNotification<MeetingView>(guid =>
-	                                                                {
-	                                                                    var clients = connectionManager.GetClients<MeetingHub>();
-                                                                        clients[guid.ToString()].test();
-	                                                                });
 	    }
 
         public static void Stop()
         {
-            
             _serviceBus.Dispose();
             _container.Dispose();
         }
