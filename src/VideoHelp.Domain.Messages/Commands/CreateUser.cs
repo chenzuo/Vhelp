@@ -6,10 +6,11 @@ namespace VideoHelp.Domain.Messages.Commands
     [DataContract]
     public class CreateUser : DomainCommand
     {
-        public CreateUser(Guid userId, string nick, string fullName, string email, string identity) : base(userId)
+        public CreateUser(Guid userId, string nick, string firstName, string lastName, string email, string identity) : base(userId)
         {
             Nick = nick;
-            FullName = fullName;
+            FirstName = firstName;
+            LastName = lastName;
             Email = email;
             Identity = identity;
         }
@@ -18,9 +19,12 @@ namespace VideoHelp.Domain.Messages.Commands
         public string Nick { get; private set; }
 
         [DataMember(Order = 3)]
-        public string FullName { get; private set; }
+        public string FirstName { get; private set; }
 
         [DataMember(Order = 4)]
+        public string LastName { get; private set; }
+
+        [DataMember(Order = 5)]
         public string Email { get; private set; }
 
         [DataMember(Order = 5)]

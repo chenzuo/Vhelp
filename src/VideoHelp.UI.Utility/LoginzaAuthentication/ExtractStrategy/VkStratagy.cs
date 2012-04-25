@@ -1,5 +1,7 @@
 
 
+using VideoHelp.UI.Utility;
+
 namespace VideoHelp.UI.Domain.LoginzaAuthentication.ExtractStrategy
 {
     public class VkStratagy : BaseStratagy
@@ -16,7 +18,7 @@ namespace VideoHelp.UI.Domain.LoginzaAuthentication.ExtractStrategy
             return new AccountInformation
                        {
                            Email = value.email,
-                           FullName = string.Join(" ", firstName, lastName),
+                           FirstName = firstName,
                            NickName = string.Join(" ", firstName, lastName),
                            Identity = value.identity,
                        };

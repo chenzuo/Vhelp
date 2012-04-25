@@ -17,7 +17,7 @@ else
 {
     <li>
         <script src="http://ulogin.ru/js/ulogin.js"></script>
-        <a href="#" id="uLogin" x-ulogin-params="display=window;fields=first_name,last_name,photo;redirect_uri=http%3A%2F%2F"><div><img src="@Url.Content("~/Content/img/user.png")" style="vertical-align: top"/> Вход</div></a>
+        <a href="#" id="uLogin" x-ulogin-params="display=window;fields=nickname,first_name,last_name,email;optional=bdate,sex,photo,photo_big,city,country;redirect_uri=@Url.Action("ULoginLogin", "Authentication", null, "http")"><div><img src="@Url.Content("~/Content/img/user.png")" style="vertical-align: top"/> Вход</div></a>
     </li>
     @*<li><a data-toggle="modal" href="#logginDialog">Вход</a></li>*@
 }

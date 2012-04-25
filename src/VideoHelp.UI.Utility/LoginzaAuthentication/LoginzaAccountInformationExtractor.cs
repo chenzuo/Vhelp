@@ -3,10 +3,11 @@ using System.IO;
 using System.Net;
 using System.Monads;
 using System.Web.Helpers;
+using VideoHelp.UI.Utility;
 
 namespace VideoHelp.UI.Domain.LoginzaAuthentication
 {
-    public class AccountInformationExtractor
+    public class LoginzaAccountInformationExtractor
     {
         private readonly IExtractProfileInformationStrategy[] _extractStrategies;
         private readonly Uri _serviceUri;
@@ -15,14 +16,18 @@ namespace VideoHelp.UI.Domain.LoginzaAuthentication
         private readonly string _secureKey;
         private readonly bool _checkSecure;
 
-        public AccountInformationExtractor(params IExtractProfileInformationStrategy[] extractStrategies)
+        public LoginzaAccountInformationExtractor(params IExtractProfileInformationStrategy[] extractStrategies)
         {
+
+            
+            
+
             _extractStrategies = extractStrategies.CheckNull("extractStrategies");
             _serviceUri = new Uri("http://loginza.ru/api/authinfo");
             _checkSecure = false;
         }
 
-        public AccountInformationExtractor(int widgetId, string secureKey, params IExtractProfileInformationStrategy[] extractStrategies) : this(extractStrategies)
+        public LoginzaAccountInformationExtractor(int widgetId, string secureKey, params IExtractProfileInformationStrategy[] extractStrategies) : this(extractStrategies)
         {
             _widgetId = widgetId;
             _secureKey = secureKey.CheckNull("secureKey");

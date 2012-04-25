@@ -56,7 +56,7 @@ namespace VideoHelp.Domain.EventListener
            
             var eventBus = _container.Resolve<IEventBus>();
             var i = 1;
-            eventBus.RegisterEventHandler<UserCreated>(created => Console.WriteLine("{1}. User was created. Name {0}", created.FullName, i++));
+            eventBus.RegisterEventHandler<UserCreated>(created => Console.WriteLine("{1}. User was created. Name {0}", created.Nick, i++));
             
         }
     }

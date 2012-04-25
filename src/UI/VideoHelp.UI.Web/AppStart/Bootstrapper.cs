@@ -3,16 +3,9 @@ using System.Configuration;
 using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using MassTransit;
 using SignalR;
-using SignalR.Hubs;
-using VideoHelp.Infrastructure;
 using VideoHelp.Infrastructure.Installers;
-using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Infrastructure.Installers;
-using VideoHelp.ReadModel.Meeting;
-using VideoHelp.UI.Domain.LoginzaAuthentication;
-using VideoHelp.UI.Domain.LoginzaAuthentication.ExtractStrategy;
 using System.Linq;
 using VideoHelp.UI.Web.AppStart;
 using VideoHelp.UI.Web.AppStart.Installers;
@@ -26,9 +19,6 @@ namespace VideoHelp.UI.Web.AppStart
     
 	public static class Bootstrapper {
 	    private static IWindsorContainer _container;
-	    private static IServiceBus _serviceBus;
-	    private static ICommandBus _commandBus;
-	    private static INotificationBus _notificationBus;
 
 	    public static void Start()
 	    {
@@ -49,25 +39,12 @@ namespace VideoHelp.UI.Web.AppStart
             _container.Register(Component.For<IWindsorContainer>().Instance(_container));
 
             DependencyResolver.SetResolver(_container.Resolve, type => _container.ResolveAll(type).OfType<object>());
-
-            var profileInfoExtractor = new AccountInformationExtractor(
-                                                            new GoogleStratagy(), 
-                                                            new YandexStratagy(),
-                                                            new MailRuStratagy(),
-                                                            new VkStratagy());
-
-            _container.Register(Component.For<AccountInformationExtractor>().Instance(profileInfoExtractor));
-            _serviceBus = _container.Resolve<IServiceBus>();
-            _commandBus = _container.Resolve<ICommandBus>();
-	        _notificationBus = _container.Resolve<INotificationBus>();
-
             Global.DependencyResolver.Register(typeof(IConnectionIdFactory), () => new UserConnectionIdFactory());
 
 	    }
 
         public static void Stop()
         {
-            _serviceBus.Dispose();
             _container.Dispose();
         }
 	}

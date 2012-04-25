@@ -1,4 +1,6 @@
 
+using VideoHelp.UI.Utility;
+
 namespace VideoHelp.UI.Domain.LoginzaAuthentication.ExtractStrategy
 {
     public class YandexStratagy : BaseStratagy
@@ -13,7 +15,7 @@ namespace VideoHelp.UI.Domain.LoginzaAuthentication.ExtractStrategy
             return new AccountInformation
                        {
                            Email = value.email,
-                           FullName = value.name.full_name,
+                           FirstName = value.name.full_name,
                            NickName = value.nickname,
                            Identity = value.identity,
                        };

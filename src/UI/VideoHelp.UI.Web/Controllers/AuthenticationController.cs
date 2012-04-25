@@ -6,10 +6,10 @@ using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
 using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Users;
-using VideoHelp.UI.Domain;
-using VideoHelp.UI.Domain.LoginzaAuthentication;
 using System.Monads;
 using System.Linq;
+using VideoHelp.UI.Utility;
+using VideoHelp.UI.Utility.UloginAuthentication;
 
 namespace VideoHelp.UI.Web.Controllers
 {
@@ -18,14 +18,12 @@ namespace VideoHelp.UI.Web.Controllers
         private readonly IRepositoryFactory _repositoryFactory;
         private readonly INotificationBus _notificationBus;
         private readonly ICommandBus _commandBus;
-        private readonly AccountInformationExtractor _accountInformationExtractor;
 
-        public AuthenticationController(AccountInformationExtractor accountInformationExtractor, ICommandBus commandBus, IRepositoryFactory repositoryFactory, INotificationBus notificationBus)
+        public AuthenticationController(ICommandBus commandBus, IRepositoryFactory repositoryFactory, INotificationBus notificationBus)
         {
             _repositoryFactory = repositoryFactory;
             _notificationBus = notificationBus;
             _commandBus = commandBus.CheckNull("commandBus");
-            _accountInformationExtractor = accountInformationExtractor.CheckNull("accountInformationExtractor");
         }
 
         public ActionResult Logoff()
@@ -35,29 +33,33 @@ namespace VideoHelp.UI.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult LoginzaLogin(string token)
+        public ActionResult ULoginLogin(string token)
         {
-            var profile = _accountInformationExtractor.Extract(token);
+            var accountInfo = new UloginAccountInformationExtractor(token, Request.ServerVariables["SERVER_NAME"]).Extract();
 
-            if (profile == null)
-            {
-                throw new HttpException(500, "Profile is null");
-            }
+            var account = new AccountInformation
+                    {
+                        NickName = accountInfo.nickname,
+                        FirstName = accountInfo.first_name,
+                        LastName = accountInfo.last_name,
+                        Email = accountInfo.email,
+                        Identity = accountInfo.identity,
+                    };
 
-            return login(profile);
+            return login(account);
         }
 
         private ActionResult login(AccountInformation account)
         {
             var association = geUsertAssociationWith(account);
             var userId = association.With(view => view.UserId);
-            
-            if(association == null || association.UserId == Guid.Empty)
+
+            if (association == null || association.UserId == Guid.Empty)
             {
-               userId = Guid.NewGuid();
-               _commandBus.Publish(new CreateUser(userId, account.NickName, account.FullName, account.Email, account.Identity.ToLower()));
-               var isUpdated = _notificationBus.WaitNotification<UserView>(userId);
-                if(!isUpdated)
+                userId = Guid.NewGuid();
+                _commandBus.Publish(new CreateUser(userId, account.NickName, account.FirstName, account.LastName, account.Email, account.Identity.ToLower()));
+                var isUpdated = _notificationBus.WaitNotification<UserView>(userId);
+                if (!isUpdated)
                 {
                     throw new HttpException(500, "Жопа! Такого не должно быть!");
                 }
@@ -72,8 +74,8 @@ namespace VideoHelp.UI.Web.Controllers
 
             _commandBus.Publish(new UpdateUserState(user.Id, DateTime.Now, UserState.Online));
             UserManager.Loggin(user.Id, user.Nick);
-            
-            
+
+
             return RedirectToAction("Index", "Meetings");
         }
 
@@ -84,5 +86,6 @@ namespace VideoHelp.UI.Web.Controllers
                 return repository.GetAll<UserAssociationView>().FirstOrDefault(identity => identity.Identity == account.Identity.ToLower());
             }
         }
+
     }
 }

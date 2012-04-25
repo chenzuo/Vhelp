@@ -36,6 +36,9 @@
     <Reference Include="Monads, Version=1.1.5.0, Culture=neutral, PublicKeyToken=c45ad03d718dd7fa, processorArchitecture=MSIL">
       <HintPath>..\..\libs\Monads.1.1.5.0\lib\net40\Monads.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\libs\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -57,7 +60,8 @@
     <Compile Include="LoginzaAuthentication\ExtractStrategy\YandexStratagy.cs" />
     <Compile Include="LoginzaAuthentication\HashExtentions.cs" />
     <Compile Include="LoginzaAuthentication\IExtractProfileInformationStrategy.cs" />
-    <Compile Include="LoginzaAuthentication\AccountInformationExtractor.cs" />
+    <Compile Include="LoginzaAuthentication\LoginzaAccountInformationExtractor.cs" />
+    <Compile Include="UloginAuthentication\UloginAccountInformationExtractor.cs" />
     <Compile Include="LoginzaHelper.cs" />
     <Compile Include="AccountInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
