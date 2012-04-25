@@ -44,6 +44,7 @@ namespace VideoHelp.UI.Web.Controllers
                         LastName = accountInfo.last_name,
                         Email = accountInfo.email,
                         Identity = accountInfo.identity,
+                        Network = accountInfo.network,
                     };
 
             return login(account);
@@ -57,7 +58,7 @@ namespace VideoHelp.UI.Web.Controllers
             if (association == null || association.UserId == Guid.Empty)
             {
                 userId = Guid.NewGuid();
-                _commandBus.Publish(new CreateUser(userId, account.NickName, account.FirstName, account.LastName, account.Email, account.Identity.ToLower()));
+                _commandBus.Publish(new CreateUser(userId, account.NickName, account.FirstName, account.LastName, account.Email, account.Network, account.Identity.ToLower()));
                 var isUpdated = _notificationBus.WaitNotification<UserView>(userId);
                 if (!isUpdated)
                 {

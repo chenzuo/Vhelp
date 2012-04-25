@@ -20,7 +20,7 @@ namespace VideoHelp.ReadModel.Users
             UserView userView;
             using (var repository = _repositoryFactory.Create())
             {
-                userView = new UserView(@event.AggregateId, @event.Nick, @event.FirstName, @event.LastName, @event.Email);
+                userView = new UserView(@event.AggregateId, @event.Nick, @event.FirstName, @event.LastName, @event.Email, @event.Network);
                 repository.Store(userView);
             }
 

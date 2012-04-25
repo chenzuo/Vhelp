@@ -8,15 +8,15 @@ namespace VideoHelp.Domain
 {
     public class User : AggregateBase
     {
-        public static User Create(Guid guid, string nick, string firstName, string lastName, string email)
+        public static User Create(Guid guid, string nick, string firstName, string lastName, string email, string network)
         {
-            return new User(guid, nick, firstName, lastName, email);
+            return new User(guid, nick, firstName, lastName, email, network);
         }
         public User(){}
 
-        private User(Guid guid, string nick, string firstName, string lastName, string email)
+        private User(Guid guid, string nick, string firstName, string lastName, string email, string network)
         {
-            RaiseEvent(new UserCreated(guid, nick, firstName, lastName, email));
+            RaiseEvent(new UserCreated(guid, nick, firstName, lastName, email, network));
         }
 
         public void AddOwnMeeting(Guid meetingId)
