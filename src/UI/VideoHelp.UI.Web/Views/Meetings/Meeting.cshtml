@@ -17,7 +17,14 @@
     
 
 <div style="position: absolute;left: 310px; top: 40px; bottom: 0; right: 0; text-align: center; vert-align: middle;">
-    <div id="contentArea" data-bind="template: { name: 'person-template', foreach: videoStreams, afterRender: attachVideoStream }"></div>
+    
+    <div id = "videoSourcesView" class="videoSourcesView" data-bind="template: { name: 'video-preview-template', foreach: videoStreams, afterRender: attachVideoPreview }">
+        
+    </div>
+
+    <div id="contentArea" data-bind="template: { name: 'person-template', foreach: videoStreams, afterRender: attachVideoStream }">
+        
+    </div>
 
 </div>
 
@@ -29,15 +36,15 @@
 <script src="/Scripts/swfobject.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.swfobject.1-1-1.min.js" type="text/javascript"></script>
 
+<script type="text/html" id="video-preview-template">
+     <div class="videoPreview" data-userid="${userId}" data-farid="${farId}"/>
+</script>
+
+
 <script type="text/html" id="person-template">
      <div class="userContent" data-userid="${userId}" data-farid="${farId}"/>
 </script>
 
-<script type="text/html" id="peopleList">
-    {{each videoStreams}}
-        <div class="userContent" data-userId="${userId}" data-farId="${farId}"/>
-    {{/each}}
-</script>
 
 <script type="text/javascript">
 
@@ -48,6 +55,13 @@
             isFitWidth: true,
             columnWidth: 340
         });
+
+        $('#videoSourcesView').masonry({
+            // options
+            itemSelector: '.videoPreview',
+            isFitWidth: true,
+            columnWidth: 100
+        });
     });
 
 
@@ -57,7 +71,7 @@
         userId: ko.observable("fsdfsd"),
         farID: ko.observable(4343),
 
-        createOwnerVideoStream : function() {
+        createOwnerVideoStream: function () {
             var $contentBox = $('<div class="userContent"/>');
             $('#contentArea').append($contentBox).masonry('appended', $contentBox);
 
@@ -75,7 +89,7 @@
                 flashvars: {
                     controls: 'true',
                     url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
-                    publish: '@UserManager.CurrentUser',                               
+                    publish: '@UserManager.CurrentUser',
                     cameraFPS: 25,
                     cameraWidth: 640,
                     cameraHeight: 480,
@@ -85,13 +99,42 @@
             });
         },
 
+        attachVideoPreview: function (elements) {
+            var $contentBox = $(elements[0]);
+            $('#videoSourcesView').masonry('appended', $contentBox);
+
+            var userId = $contentBox.data('userid');
+            var farId = $contentBox.data('farid');
+
+            $contentBox.flash(
+                {
+                    swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
+                    // these arguments will be passed into the flash document
+                    quality: 'high',
+                    bgcolor: '#000000',
+                    width: '90',
+                    height: '60',
+                    allowfullscreen: 'false',
+                    allowscriptaccess: 'always',
+                    flashvars: {
+                        controls: 'true',
+                        url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
+                        play: userId,
+                        farID: farId
+                    }
+                });
+
+            $contentBox.append('<div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;" class="activatePreview"/>');
+
+        },
+
         attachVideoStream: function (elements) {
             var $contentBox = $(elements[0]);
             $('#contentArea').masonry('appended', $contentBox);
-            
+
             var userId = $contentBox.data('userid');
             var farId = $contentBox.data('farid');
-            
+
             $contentBox.flash(
             {
                 swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
@@ -106,7 +149,7 @@
                     controls: 'true',
                     url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
                     play: userId,
-                    farID: farId                   
+                    farID: farId
                 }
             });
         }
@@ -115,6 +158,20 @@
     ko.applyBindings(viewModel);
 
     var meetingHub = $.connection.meetingHub;
+
+
+    $(".activatePreview").live("click", function () {
+        var b = $(this).parent().find('object');
+        b.detach();
+
+        var $contentBox = $('<div class="userContent"/>');
+        $contentBox.append(b);
+        $('#contentArea').append($contentBox).masonry('appended', $contentBox);
+
+
+        $(this).parent().remove();
+
+    });  
 
     meetingHub.updateCameraStream = function (userId, farId) {
 

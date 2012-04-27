@@ -47,9 +47,7 @@ namespace VideoHelp.ReadModel.Meeting
                 }
 
                 meetingStreams.CameraStreams.Add(new CameraStream(@event.OwnerUser, @event.StreamLink));
-
             }
-
             _notificationBus.PublishNotification(new ViewUpdated<MeetingCameraStreamsView>(meetingStreams.Id));
         } 
     }
