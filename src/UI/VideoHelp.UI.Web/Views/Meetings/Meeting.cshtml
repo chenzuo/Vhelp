@@ -18,12 +18,10 @@
 
 <div style="position: absolute;left: 310px; top: 40px; bottom: 0; right: 0; text-align: center; vert-align: middle;">
     
-    <div id = "videoSourcesView" class="videoSourcesView" data-bind="template: { name: 'video-preview-template', foreach: videoStreams, afterRender: attachVideoPreview }">
-        
+    <div id = "videoSourcesView" class="videoSourcesView" data-bind="template: { name: 'video-preview-template', foreach: videoStreams, afterRender: attachVideoPreview }">  
     </div>
-
-    <div id="contentArea" data-bind="template: { name: 'person-template', foreach: videoStreams, afterRender: attachVideoStream }">
-        
+    
+    <div id="mainVideoView" class="mainVideo">
     </div>
 
 </div>
@@ -40,22 +38,9 @@
      <div class="videoPreview" data-userid="${userId}" data-farid="${farId}"/>
 </script>
 
-
-<script type="text/html" id="person-template">
-     <div class="userContent" data-userid="${userId}" data-farid="${farId}"/>
-</script>
-
-
 <script type="text/javascript">
 
     $(function () {
-        $('#contentArea').masonry({
-            // options
-            itemSelector: '.userContent',
-            isFitWidth: true,
-            columnWidth: 340
-        });
-
         $('#videoSourcesView').masonry({
             // options
             itemSelector: '.videoPreview',
@@ -68,82 +53,48 @@
     var viewModel = {
         videoStreams: ko.observableArray([]),
 
-        userId: ko.observable("fsdfsd"),
-        farID: ko.observable(4343),
-
         createOwnerVideoStream: function () {
-            var $contentBox = $('<div class="userContent"/>');
-            $('#contentArea').append($contentBox).masonry('appended', $contentBox);
 
-            $contentBox.flash(
+            var flash = $.flash.create(
             {
                 swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
-                // these arguments will be passed into the flash document
                 quality: 'high',
                 bgcolor: '#000000',
-                width: '320',
+                width: '100%',
+                height: '100%',
+                scale: "exactFit",
                 name: 'video-publisher',
-                height: '240',
                 allowfullscreen: 'true',
                 allowscriptaccess: 'always',
                 flashvars: {
                     controls: 'true',
                     url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
                     publish: '@UserManager.CurrentUser',
-                    cameraFPS: 25,
                     cameraWidth: 640,
                     cameraHeight: 480,
                     cameraQuality: 90,
                     smoothing: true
                 }
             });
+
+
+            addToVideoPreview(flash);
         },
 
         attachVideoPreview: function (elements) {
-            var $contentBox = $(elements[0]);
-            $('#videoSourcesView').masonry('appended', $contentBox);
+            var content = $(elements[0]);
 
-            var userId = $contentBox.data('userid');
-            var farId = $contentBox.data('farid');
+            var userId = content.data('userid');
+            var farId = content.data('farid');
 
-            $contentBox.flash(
-                {
-                    swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
-                    // these arguments will be passed into the flash document
-                    quality: 'high',
-                    bgcolor: '#000000',
-                    width: '90',
-                    height: '60',
-                    allowfullscreen: 'false',
-                    allowscriptaccess: 'always',
-                    flashvars: {
-                        controls: 'true',
-                        url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
-                        play: userId,
-                        farID: farId
-                    }
-                });
-
-            $contentBox.append('<div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;" class="activatePreview"/>');
-
-        },
-
-        attachVideoStream: function (elements) {
-            var $contentBox = $(elements[0]);
-            $('#contentArea').masonry('appended', $contentBox);
-
-            var userId = $contentBox.data('userid');
-            var farId = $contentBox.data('farid');
-
-            $contentBox.flash(
-            {
+            var flash = $.flash.create({
                 swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
-                // these arguments will be passed into the flash document
                 quality: 'high',
                 bgcolor: '#000000',
-                width: '320',
-                height: '240',
-                allowfullscreen: 'true',
+                width: '100%',
+                height: '100%',
+                scale: "exactFit",
+                allowfullscreen: 'false',
                 allowscriptaccess: 'always',
                 flashvars: {
                     controls: 'true',
@@ -152,26 +103,50 @@
                     farID: farId
                 }
             });
+
+            content.remove();
+            addToVideoPreview(flash);
         }
     };
 
     ko.applyBindings(viewModel);
 
+    function addToVideoPreview(flash) {
+
+        if ($("#mainVideoView").flash().length == 0) {
+            $("#mainVideoView").append(flash);
+            return;
+        }
+
+        var content = $('<div class="videoPreview"/>');
+        content.append(flash);
+
+        $('#videoSourcesView').append(content).masonry('appended', content);
+        content.append('<div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;" class="previewEventDiv"/>');
+    }
+
+
+    $(".previewEventDiv").live("click", function () {
+        
+        var preview = $(this).parent().flash();
+        preview.detach();
+        $('#videoSourcesView').masonry('remove', $(this).parent()).masonry('reload');
+
+        fullView = $("#mainVideoView").flash();
+
+        if (fullView.length >= 1) {
+            fullView.detach();
+            previewBox = $('<div class="videoPreview"/>');
+            previewBox.append(fullView);
+            $('#videoSourcesView').append(previewBox).masonry('appended', previewBox);
+            previewBox.append('<div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;" class="previewEventDiv"/>');
+        }
+
+        $("#mainVideoView").append(preview);
+
+    });
+
     var meetingHub = $.connection.meetingHub;
-
-
-    $(".activatePreview").live("click", function () {
-        var b = $(this).parent().find('object');
-        b.detach();
-
-        var $contentBox = $('<div class="userContent"/>');
-        $contentBox.append(b);
-        $('#contentArea').append($contentBox).masonry('appended', $contentBox);
-
-
-        $(this).parent().remove();
-
-    });  
 
     meetingHub.updateCameraStream = function (userId, farId) {
 
