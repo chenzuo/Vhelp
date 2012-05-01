@@ -11,6 +11,7 @@
             <div class="page-header">
                             
                 <p><a href="#" id="addBox" data-bind="click: createOwnerVideoStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i> Включить</a></p>     
+                <p><a href="#" id="process" class="btn btn-success"><i class="icon-facetime-video icon-white"></i> process</a></p>     
             </div>
         </div>
     </div>    
@@ -20,21 +21,17 @@
     
     <div class="topContainer">
         <div class="align_center_to_left">
-            <div class="videoContainer align_center_to_right">
-                <div id="videoView" class="mainVideo" data-bind="showInVideoView: currentStream">
-                    <div id="ownerVideoPreview" class="ownerVideoPreview"></div>
+            <div class="videoContentContainer align_center_to_right">
+                <div class="mainVideoContainer">
+                    <div id="mainVideoView" class="mainVideo" data-bind="showMainVideoView: currentStream"></div>
+                    <div id="ownerVideoPreview" class="ownerVideoPreview"></div>    
                 </div>
-                <div id ="videoPreviewList" class="videoPreviewListCollapsed"></div>  
-            </div>
+                <div id ="videoPreviewList" class="videoPreviewListCollapsed" data-bind="foreach: videoStreams">
+                    <div id ="preview" class="videoPreview" data-bind = "showVideoPreview: $data"></div>
+                </div> 
+            </div> 
         </div>
     </div>
-
-    <div id = "videoSourcesView" class="videoSourcesView" data-bind="template: { name: 'video-preview-template', foreach: videoStreams, afterRender: attachVideoPreview }">  
-    </div>
-    
-    <div id="mainVideoView" class="mainVideo">
-    </div>
-
 </div>
 
 <script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
@@ -44,16 +41,24 @@
 <script src="/Scripts/swfobject.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.swfobject.1-1-1.min.js" type="text/javascript"></script>
 
-<script type="text/html" id="video-preview-template">
-     <div class="videoPreview" data-userid="${userId}" data-farid="${farId}"/>
-</script>
 
 <script type="text/javascript">
 
-    var viewModel = {
-        
+    $viewModel = {
         currentStream: ko.observable(),
         videoStreams: ko.observableArray([]),
+        
+        addVideoStream: function (userId, farId) {
+            var stream = { userId: userId, farId: farId };
+
+            if (this.currentStream() == null) {
+                this.currentStream(stream);
+                $("#ownerVideoPreview").removeClass('fullScreenOwnerVideoPreview').addClass('ownerVideoPreview');
+                return;
+            }
+
+            this.videoStreams.push(stream);
+        },
 
         createOwnerVideoStream: function () {
 
@@ -79,17 +84,47 @@
                 }
             });
 
-            addOwnerSource(flash);
-            //addToVideoPreview(flash);
-        },
+            if ($("#ownerVideoPreview").flash().length != 0) {
+                $("#ownerVideoPreview").children().remove();
+            }
 
-        attachVideoPreview: function (elements) {
-            var content = $(elements[0]);
+            $("#ownerVideoPreview").append(flash).append('<div class="previewEventDiv"/>');
+            
+            if(this.videoStreams().length == 0) {
+                $("#ownerVideoPreview").removeClass('ownerVideoPreview').addClass('fullScreenOwnerVideoPreview');
+            }
+        }
+    };
 
-            var userId = content.data('userid');
-            var farId = content.data('farid');
+    ko.bindingHandlers.showMainVideoView = {
+        update: function (element, valueAccessor) {
+            var stream = ko.utils.unwrapObservable(valueAccessor());
 
-            var flash = $.flash.create({
+            if (stream == undefined) {
+                $("#mainVideoView").flash().remove();
+                return;
+            } 
+            else {
+                appendFlash($(element), stream.userId, stream.farId);    
+            }
+        }
+    };
+
+    ko.bindingHandlers.showVideoPreview = {
+        update: function (element, valueAccessor) {
+            var stream = ko.utils.unwrapObservable(valueAccessor());
+
+            $("#videoPreviewList").removeClass('videoPreviewListCollapsed').addClass('videoPreviewList');
+
+            appendFlash($(element), stream.userId, stream.farId);
+            $('<div class="previewEventDiv"  data-userid="' + stream.userId + '" data-farid="' + stream.farId + '" />').appendTo($(element));
+        }
+    };
+
+    ko.applyBindings($viewModel);
+
+    function appendFlash(element, userId, farId) {
+        element.flash({
                 swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
                 quality: 'high',
                 bgcolor: '#3f3f3f',
@@ -107,90 +142,47 @@
                 }
             });
 
-            content.remove();
-            addToVideoPreview(flash);
-        }
-        
-
-    };
-
-    ko.bindingHandlers.showInVideoView = {
-        update: function (element, valueAccessor) {
-            var currentStream = ko.utils.unwrapObservable(valueAccessor());
-
-            if (currentStream == undefined) {
-                $("#videoView").flash().remove();
-                return;
-            }
-        }
-    };
-    
-    ko.applyBindings(viewModel);
-
-    function addOwnerSource(flash) {
-
-        if ($("#ownerVideoPreview").flash().length != 0) {
-            $("#ownerVideoPreview").children().remove();
-        }
-
-        $("#ownerVideoPreview").append(flash).append('<div class="previewEventDiv"/>');
-    }
-
-    function addToVideoPreview(flash) {
-
-        if ($("#videoView").flash().length == 0) {
-            $("#videoView").append(flash);
-            return;
-        }
-        
-        var content = $('<div class="videoPreview"/>');
-        content.append(flash);
-        content.append('<div class="previewEventDiv"/>');
-        $('#videoPreviewList').removeClass('videoPreviewListCollapsed').addClass('videoPreviewList').append(content);
-
+        return element;
     }
 
     $("#ownerVideoPreview .previewEventDiv").live("click", function () {
-        $('#ownerVideoPreview')
-            .toggleClass('ownerVideoPreview')
-            .toggleClass('fullScreenOwnerVideoPreview');
+
+        $('#ownerVideoPreview').toggleClass('ownerVideoPreview').toggleClass('fullScreenOwnerVideoPreview');
 
         if ($('#ownerVideoPreview').hasClass('fullScreenOwnerVideoPreview')) {
-            viewModel.currentStream('dsds');
-            viewModel.currentStream(null);
+
+            if ($viewModel.currentStream() != null) {
+                $viewModel.videoStreams.unshift($viewModel.currentStream());
+                $viewModel.currentStream(null);
+            }
+
         } else {
-            showFromPreview();
+            $viewModel.currentStream($viewModel.videoStreams.shift());
         }
     });
 
-    function moveToPreview() {
-        var flash = $("#videoView").flash();
+
+    $("#preview .previewEventDiv").live("click", function () {
+        var userId = $(this).data('userid');
+
+        $($viewModel.videoStreams()).each(function (index, stream) {
+            if (stream.userId == userId) {
+                var removedStream = $viewModel.videoStreams.splice(index, 1)[0];
+
+                if ($viewModel.currentStream() != null) {
+                    $viewModel.addVideoStream($viewModel.currentStream().userId, $viewModel.currentStream().farId);
+                }
+
+                $viewModel.currentStream(removedStream);
+            }
+        });
+
+    });
+
+
+    $('#process').bind('click', function () {
         
-        if (flash.length != 0) {
-            flash.detach();
-        }
-    }
-
-    $("#videoPreviewList .previewEventDiv").live("click", function () {
-
-        var preview = $(this).parent().flash();
-        preview.detach();
-
-        $("#mainVideoView").append(preview);
-        
-        fullView = $("#mainVideoView").flash();
-
-        if (fullView.length >= 1) {
-          //  fullView.detach();
-            previewBox = $('<div class="videoPreview"/>');
-            previewBox.append(fullView);
-            $('#videoSourcesView').append(previewBox).masonry('appended', previewBox);
-            previewBox.append('<div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px;" class="previewEventDiv"/>');
-        }
-
-        $('#videoSourcesView').masonry('remove', $(this).parent()).masonry('reload');
-        
-
+        $viewModel.addVideoStream('ewew','453sefrew'); 
     });
 
     var meetingHub = $.connection.meetingHub;
@@ -198,7 +190,7 @@
     meetingHub.updateCameraStream = function (userId, farId) {
 
         if ('@UserManager.CurrentUser' != userId) {
-            viewModel.videoStreams.push({ userId: userId, farId: farId }); 
+            $viewModel.addVideoStream(userId, farId); 
         }
     };
 

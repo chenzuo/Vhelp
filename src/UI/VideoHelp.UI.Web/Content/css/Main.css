@@ -25,7 +25,6 @@ border-right: 1px solid #CCC;
     background-color: #F9F9F9;
 }
 
-
 .ownerVideoPreview {
     width: 160px;
     height: 120px;
@@ -68,22 +67,27 @@ border-right: 1px solid #CCC;
     background-color: #272727;
 }
 
-.videoContainer {
+.videoContentContainer {
     position:relative; 
     height: 480px; 
     padding: 2px;
     background-color: #1e1e1e;
 }
 
-.mainVideo {
+.mainVideoContainer {
     position:relative; 
     height: 480px; 
     width: 640px;
+    float: left;
+}
+
+.mainVideo {
+    position: absolute;
+    top: 0;right: 0;left: 0;bottom: 0;
     background-color: #3f3f3f;
     background-image: url(../img/webCamera.png);
     background-repeat:no-repeat;
     background-position: center;
-    float: left;
 }
 
 .videoPreviewListCollapsed {
