@@ -64,7 +64,7 @@
 
             var flash = $.flash.create(
             {
-                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
+                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
                 quality: 'high',
                 bgcolor: '#3f3f3f',
                 width: '100%',
@@ -89,8 +89,8 @@
             }
 
             $("#ownerVideoPreview").append(flash).append('<div class="previewEventDiv"/>');
-            
-            if(this.videoStreams().length == 0) {
+
+            if (this.videoStreams().length == 0 && this.currentStream() == null) {
                 $("#ownerVideoPreview").removeClass('ownerVideoPreview').addClass('fullScreenOwnerVideoPreview');
             }
         }
@@ -125,7 +125,7 @@
 
     function appendFlash(element, userId, farId) {
         element.flash({
-                swf: '@Url.Content("~/Content/flash/VideoIO11.swf")',
+                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
                 quality: 'high',
                 bgcolor: '#3f3f3f',
                 width: '100%',
@@ -137,8 +137,8 @@
                     controls: 'false',
                     url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
                     play: userId,
-                    farID: farId,
-                    poster: '@Url.Content("~/Content/img/loading.png")'
+                    farID: farId
+                    /*poster: '@Url.Content("~/Content/img/loading.png")'*/
                 }
             });
 
@@ -165,6 +165,11 @@
     $("#preview .previewEventDiv").live("click", function () {
         var userId = $(this).data('userid');
 
+
+        if ($('#ownerVideoPreview').hasClass('fullScreenOwnerVideoPreview')) {
+            $('#ownerVideoPreview').toggleClass('ownerVideoPreview').toggleClass('fullScreenOwnerVideoPreview');
+        }
+        
         $($viewModel.videoStreams()).each(function (index, stream) {
             if (stream.userId == userId) {
                 var removedStream = $viewModel.videoStreams.splice(index, 1)[0];
