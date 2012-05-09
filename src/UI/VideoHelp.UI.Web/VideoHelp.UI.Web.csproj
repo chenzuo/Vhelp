@@ -110,9 +110,11 @@
     <Content Include="Content\css\bootstrap-responsive.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\video.css" />
     <Content Include="Content\flash\VideoIO.swf" />
     <Content Include="Content\flash\VideoIO11.swf" />
     <Content Include="Content\flash\VideoIO45.swf" />
+    <Content Include="Content\img\video-background.jpg" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\img\loading.png" />
@@ -219,9 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_LogginMenuItem.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_LogginDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ExternalSource\SignalR.Hosting.AspNet\SignalR.Hosting.AspNet.csproj">

@@ -11,17 +11,10 @@ namespace VideoHelp.Infrastructure.Factories
         {
             return global::MassTransit.ServiceBusFactory.New(sbc =>
                 {
-                    sbc.UseMsmq();
+                    sbc.UseRabbitMq();
+                    sbc.UseRabbitMqRouting();
                     sbc.UseNLog();
-                    sbc.VerifyMsmqConfiguration();
-                    sbc.UseMulticastSubscriptionClient();
                     sbc.ReceiveFrom(endpoint);
-                    sbc.UseControlBus();
-                    sbc.UseJsonSerializer();
-
-                    sbc.SetConcurrentConsumerLimit(5);
-                    sbc.SetDefaultTransactionTimeout(1.Minutes());
-
                 });
         }
     }

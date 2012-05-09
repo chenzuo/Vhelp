@@ -3,15 +3,7 @@
 padding-top: 40px; /* ну или 60 */
 }
 
-.sidebar {
-position: fixed;
-z-index: 500;
-background-color: #F9F9F9;
-padding: 10px 10px 10px 20px;
-height: 100%;
-width: 170px;
-border-right: 1px solid #CCC;
-}
+
 
 #contentArea {
     margin: 20px auto; 

@@ -5,30 +5,24 @@
     ViewBag.Title = "Комната " + Model.Name;
 }
 
+<link href="@Url.Content("~/Content/css/video.css")" rel="stylesheet" type="text/css" />
 
-<div style="width: 310px; left: 0; top: 40px; bottom: 0; position: absolute; background: #F9F9F9; border-right: 1px solid #CCC; border-right-width: 1px; border-right-style: solid; border-right-color: #CCCCCC;">
-        <div class="container-fluid">
-            <div class="page-header">
-                            
-                <p><a href="#" id="addBox" data-bind="click: createOwnerVideoStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i> Включить</a></p>     
-                <p><a href="#" id="process" class="btn btn-success"><i class="icon-facetime-video icon-white"></i> process</a></p>     
-            </div>
-        </div>
-    </div>    
-    
+  
 
-<div style="position: absolute;left: 310px; top: 40px; bottom: 0; right: 0; text-align: center; vert-align: middle;">
+<div class="mainContainer">
     
     <div class="topContainer">
         <div class="align_center_to_left">
-            <div class="videoContentContainer align_center_to_right">
-                <div class="mainVideoContainer">
-                    <div id="mainVideoView" class="mainVideo" data-bind="showMainVideoView: currentStream"></div>
-                    <div id="ownerVideoPreview" class="ownerVideoPreview"></div>    
+            <div class="align_center_to_right">
+                <div>
+                    <div class="videoMenu">
+                        <p><a href="#" id="addBox" data-bind="click: createOwnerVideoStream" class="btn btn-success"><i class="icon-facetime-video icon-white"></i> Включить</a></p>     
+                        <p><a href="#" id="process" class="btn btn-success"><i class="icon-facetime-video icon-white"></i> process</a></p>    
+                    </div>    
+                    <div class = "videoContainer" data-bind="foreach: videoContainers">
+                        <div data-bind = "addToVideoContainer: $data"></div>
+                    </div>
                 </div>
-                <div id ="videoPreviewList" class="videoPreviewListCollapsed" data-bind="foreach: videoStreams">
-                    <div id ="preview" class="videoPreview" data-bind = "showVideoPreview: $data"></div>
-                </div> 
             </div> 
         </div>
     </div>
@@ -47,7 +41,12 @@
     $viewModel = {
         currentStream: ko.observable(),
         videoStreams: ko.observableArray([]),
-        
+        videoContainers: ko.observableArray([]),
+
+        addVideoContainer: function (id, container) {
+            this.videoContainers.push({ id: id, container: container });
+        },
+
         addVideoStream: function (userId, farId) {
             var stream = { userId: userId, farId: farId };
 
@@ -66,7 +65,6 @@
             {
                 swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
                 quality: 'high',
-                bgcolor: '#3f3f3f',
                 width: '100%',
                 height: '100%',
                 scale: "exactFit",
@@ -84,110 +82,35 @@
                 }
             });
 
-            if ($("#ownerVideoPreview").flash().length != 0) {
-                $("#ownerVideoPreview").children().remove();
-            }
+            this.addVideoContainer('@UserManager.CurrentUser', flash);
 
-            $("#ownerVideoPreview").append(flash).append('<div class="previewEventDiv"/>');
-
-            if (this.videoStreams().length == 0 && this.currentStream() == null) {
-                $("#ownerVideoPreview").removeClass('ownerVideoPreview').addClass('fullScreenOwnerVideoPreview');
-            }
         }
     };
 
-    ko.bindingHandlers.showMainVideoView = {
+
+    ko.bindingHandlers.addToVideoContainer = {
         update: function (element, valueAccessor) {
-            var stream = ko.utils.unwrapObservable(valueAccessor());
+            var container = ko.utils.unwrapObservable(valueAccessor());
 
-            if (stream == undefined) {
-                $("#mainVideoView").flash().remove();
-                return;
-            } 
-            else {
-                appendFlash($(element), stream.userId, stream.farId);    
-            }
-        }
-    };
+            var cssClass = $(".mainView").length > 0 ? "preview" : "mainView";
 
-    ko.bindingHandlers.showVideoPreview = {
-        update: function (element, valueAccessor) {
-            var stream = ko.utils.unwrapObservable(valueAccessor());
-
-            $("#videoPreviewList").removeClass('videoPreviewListCollapsed').addClass('videoPreviewList');
-
-            appendFlash($(element), stream.userId, stream.farId);
-            $('<div class="previewEventDiv"  data-userid="' + stream.userId + '" data-farid="' + stream.farId + '" />').appendTo($(element));
+            $(element).addClass(cssClass).append(container.container);
         }
     };
 
     ko.applyBindings($viewModel);
 
-    function appendFlash(element, userId, farId) {
-        element.flash({
-                swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
-                quality: 'high',
-                bgcolor: '#3f3f3f',
-                width: '100%',
-                height: '100%',
-                scale: "exactFit",
-                allowfullscreen: 'false',
-                allowscriptaccess: 'always',
-                flashvars: {
-                    controls: 'false',
-                    url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
-                    play: userId,
-                    farID: farId
-                    /*poster: '@Url.Content("~/Content/img/loading.png")'*/
-                }
-            });
-
-        return element;
-    }
-
-    $("#ownerVideoPreview .previewEventDiv").live("click", function () {
-
-        $('#ownerVideoPreview').toggleClass('ownerVideoPreview').toggleClass('fullScreenOwnerVideoPreview');
-
-        if ($('#ownerVideoPreview').hasClass('fullScreenOwnerVideoPreview')) {
-
-            if ($viewModel.currentStream() != null) {
-                $viewModel.videoStreams.unshift($viewModel.currentStream());
-                $viewModel.currentStream(null);
-            }
-
-        } else {
-            $viewModel.currentStream($viewModel.videoStreams.shift());
-        }
+    $(".preview").live("mousedown", function () {
+        $(".mainView").removeClass('mainView').addClass('preview');
+        $(this).removeClass('preview').addClass('mainView');
     });
-
-
-    $("#preview .previewEventDiv").live("click", function () {
-        var userId = $(this).data('userid');
-
-
-        if ($('#ownerVideoPreview').hasClass('fullScreenOwnerVideoPreview')) {
-            $('#ownerVideoPreview').toggleClass('ownerVideoPreview').toggleClass('fullScreenOwnerVideoPreview');
-        }
-        
-        $($viewModel.videoStreams()).each(function (index, stream) {
-            if (stream.userId == userId) {
-                var removedStream = $viewModel.videoStreams.splice(index, 1)[0];
-
-                if ($viewModel.currentStream() != null) {
-                    $viewModel.addVideoStream($viewModel.currentStream().userId, $viewModel.currentStream().farId);
-                }
-
-                $viewModel.currentStream(removedStream);
-            }
-        });
-
-    });
-
+    
 
     $('#process').bind('click', function () {
-        
-        $viewModel.addVideoStream('ewew','453sefrew'); 
+
+        $viewModel.addVideoContainer('fsdfds', createVideoContainer('432', '423432')); 
+
+       //$viewModel.addVideoStream('ewew', '453sefrew');
     });
 
     var meetingHub = $.connection.meetingHub;
@@ -195,9 +118,28 @@
     meetingHub.updateCameraStream = function (userId, farId) {
 
         if ('@UserManager.CurrentUser' != userId) {
-            $viewModel.addVideoStream(userId, farId); 
+            $viewModel.addVideoContainer(userId, createVideoContainer(userId, farId)); 
         }
     };
+
+
+    function createVideoContainer(userId, farId) {
+        return $.flash.create({
+            swf: '@Url.Content("~/Content/flash/VideoIO.swf")',
+            quality: 'high',
+            width: '100%',
+            height: '100%',
+            scale: "exactFit",
+            allowfullscreen: 'false',
+            allowscriptaccess: 'always',
+            flashvars: {
+                controls: 'false',
+                url: 'rtmfp://stratus.rtmfp.net/d1e1e5b3f17e90eb35d244fd-c711881365d9',
+                play: userId,
+                farID: farId
+            }
+        });
+    }
 
     //стартуем все хабы
     $.connection.hub.start(function () {
