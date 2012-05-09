@@ -3,7 +3,6 @@
 padding-top: 40px; /* ну или 60 */
 }
 
-
 .sidebar {
 position: fixed;
 z-index: 500;
@@ -24,88 +23,6 @@ border-right: 1px solid #CCC;
     margin: 10px;
     background-color: #F9F9F9;
 }
-
-.ownerVideoPreview {
-    width: 160px;
-    height: 120px;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-}
-
-.fullScreenOwnerVideoPreview {
-    width: 640px;
-    height: 480px;
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-}
-
-.videoPreview {
-    position: relative;
-    width: 90px;
-    height: 60px;
-    padding-bottom: 2px;
-    background-color: #1e1e1e;
-}
-
-.previewEventDiv {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-}
-
-
-.topContainer {
-    position:relative;
-    height: 484px; 
-    width: 100%;
-    margin: 0px;
-    padding: 10px;
-    background-color: #272727;
-}
-
-.videoContentContainer {
-    position:relative; 
-    height: 480px; 
-    padding: 2px;
-    background-color: #1e1e1e;
-}
-
-.mainVideoContainer {
-    position:relative; 
-    height: 480px; 
-    width: 640px;
-    float: left;
-}
-
-.mainVideo {
-    position: absolute;
-    top: 0;right: 0;left: 0;bottom: 0;
-    background-color: #3f3f3f;
-    background-image: url(../img/webCamera.png);
-    background-repeat:no-repeat;
-    background-position: center;
-}
-
-.videoPreviewListCollapsed {
-    position:relative; 
-    height: 480px; 
-    width: 0px;
-    margin-left: 2px;
-    float: right;
-}
-
-.videoPreviewList {
-    position:relative; 
-    height: 480px; 
-    width: 90px;
-    margin-left: 2px;
-    float: right;
-}
-
 
 .align_center{
     position: relative;
