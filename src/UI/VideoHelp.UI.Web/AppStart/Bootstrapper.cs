@@ -31,7 +31,8 @@ namespace VideoHelp.UI.Web.AppStart
                     new RavenInstaller(),
                     new RavenRepositoryFactoryInstaller(),
                     new SecurityConfigurationInstaller(),
-                    new NotificationBusInstaller()
+                    new NotificationBusInstaller(),
+                    new ViewRepositoryInstaller()
                 );
 
             _container.Register(Classes.FromThisAssembly().BasedOn<IController>().LifestyleTransient());

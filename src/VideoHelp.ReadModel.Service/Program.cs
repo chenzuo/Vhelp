@@ -50,7 +50,8 @@ namespace VideoHelp.ReadModel.Service
                     new EventBusInstaller(),
                     new RavenInstaller(),
                     new RavenRepositoryFactoryInstaller(),
-                    new NotificationBusInstaller()
+                    new NotificationBusInstaller(),
+                    new RavenIndexInstaller()
                     );
 
             _container.Register(Component.For<IWindsorContainer>().Instance(_container));

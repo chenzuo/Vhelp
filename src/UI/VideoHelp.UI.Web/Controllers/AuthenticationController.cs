@@ -8,6 +8,7 @@ using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Users;
 using System.Monads;
 using System.Linq;
+using VideoHelp.ReadModel.Views;
 using VideoHelp.UI.Utility;
 using VideoHelp.UI.Utility.UloginAuthentication;
 
@@ -16,12 +17,16 @@ namespace VideoHelp.UI.Web.Controllers
     public class AuthenticationController : Controller
     {
         private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IViewRepository _viewRepository;
         private readonly INotificationBus _notificationBus;
         private readonly ICommandBus _commandBus;
 
-        public AuthenticationController(ICommandBus commandBus, IRepositoryFactory repositoryFactory, INotificationBus notificationBus)
+        public AuthenticationController(ICommandBus commandBus, IRepositoryFactory repositoryFactory, IViewRepository viewRepository, INotificationBus notificationBus)
         {
             _repositoryFactory = repositoryFactory;
+            _viewRepository = viewRepository;
+
+            _viewRepository.Load<UserAccoutViewInputModel, UserAccoutView>(new UserAccoutViewInputModel{UserId = Guid.NewGuid()});
             _notificationBus = notificationBus;
             _commandBus = commandBus.CheckNull("commandBus");
         }

@@ -119,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Installers\NotificationBusInstaller.cs" />
+    <Compile Include="Installers\RavenIndexInstaller.cs" />
+    <Compile Include="Installers\ViewRepositoryInstaller.cs" />
     <Compile Include="NotificationBus.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
     <Compile Include="Installers\RavenRepositoryFactoryInstaller.cs" />
