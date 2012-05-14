@@ -1,13 +1,13 @@
-using Raven.Client.Document;
+using Raven.Client;
 using VideoHelp.ReadModel.Documents;
 
 namespace VideoHelp.ReadModel.Views
 {
     public class MeetingViewFactory : IViewFactory<MeetingInputModel, MeetingView>
     {
-        private readonly DocumentStore _documentStore;
+        private readonly IDocumentStore _documentStore;
 
-        public MeetingViewFactory(DocumentStore documentStore)
+        public MeetingViewFactory(IDocumentStore documentStore)
         {
             _documentStore = documentStore;
         }

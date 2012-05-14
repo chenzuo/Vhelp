@@ -1,5 +1,6 @@
 using System.Linq;
 using Raven.Client;
+using Raven.Client.Linq;
 using VideoHelp.ReadModel.Documents;
 
 namespace VideoHelp.ReadModel.Views
@@ -27,12 +28,8 @@ namespace VideoHelp.ReadModel.Views
                 {
                     query = query.Where(x => x.Name.StartsWith(input.SearchText));
                 }
-                var b = query.Select(document => "sdsa").ToList();
 
-                var items = query
-                    .Select(x => new MeetingBrowseItem(x.Id, "", x.Name, x.CreationDate))
-                    .ToList();
-
+                var items = query.ToArray().Select(x => new MeetingBrowseItem(x.Id, "", x.Name, x.CreationDate));
                 return new MeetingBrowseView(input.PageSize, input.Page, input.SearchText, items);
             }
 
