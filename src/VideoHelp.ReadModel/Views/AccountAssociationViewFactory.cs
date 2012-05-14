@@ -18,6 +18,7 @@ namespace VideoHelp.ReadModel.Views
             using (var session = _documentStore.OpenSession())
             {
                 return session.Query<AccountAssociationView, AccountIdentityByUserId>()
+                    .Customize(customization =>  customization.WaitForNonStaleResultsAsOfNow())
                     .FirstOrDefault(view => view.AccountIdentity == input.AccountIdentity);
             }
         }
