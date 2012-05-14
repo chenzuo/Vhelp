@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using VideoHelp.ReadModel.Contracts;
 
 namespace VideoHelp.ReadModel.Meeting
 {

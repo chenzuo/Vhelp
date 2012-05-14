@@ -1,6 +1,5 @@
 ﻿using VideoHelp.Domain.Messages.Events.MediaContent;
 using VideoHelp.Domain.Messages.Events.Meeting;
-using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Notification;
 using System.Linq;
 

@@ -13,5 +13,9 @@ namespace VideoHelp.Domain.Messages.Events.Users
 
         [DataMember(Order = 3)]
         public string Identity { get; private set; }
+
+        [DataMember(Order = 4)]
+        public string Network { get; private set; }
+
     }
 }

@@ -10,7 +10,6 @@ using SignalR.Hubs;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
-using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Meeting;
 using VideoHelp.ReadModel.Notification;
 using System.Monads;

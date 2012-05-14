@@ -5,7 +5,7 @@ namespace VideoHelp.ReadModel.Documents
 {
     public class UserDocument : IDocument
     {
-        public UserDocument(Guid id, string nick, string firstName, string lastName, string email)
+        public UserDocument(Guid id, string nick, string firstName, string lastName, string email) : this()
         {
             Id = id;
             Email = email;
@@ -14,7 +14,10 @@ namespace VideoHelp.ReadModel.Documents
             Nick = nick;
         }
 
-        public UserDocument() { }
+        public UserDocument()
+        {
+            AccountAssociations = new List<AccountAssociationDocument>();
+        }
 
         public Guid Id { get; set; }
 

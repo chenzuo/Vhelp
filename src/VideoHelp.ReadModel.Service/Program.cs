@@ -9,7 +9,6 @@ using VideoHelp.Domain.Messages.Events.Meeting;
 using VideoHelp.Domain.Messages.Events.Users;
 using VideoHelp.Infrastructure;
 using VideoHelp.Infrastructure.Installers;
-using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Infrastructure.Installers;
 using VideoHelp.ReadModel.Meeting;
 using VideoHelp.ReadModel.Users;

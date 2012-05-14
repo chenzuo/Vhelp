@@ -45,17 +45,16 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\INotification.cs" />
-    <Compile Include="Contracts\INotificationBus.cs" />
+    <Compile Include="INotificationBus.cs" />
     <Compile Include="Documents\IDocument.cs" />
     <Compile Include="Documents\UserDocument.cs" />
+    <Compile Include="EventHandlers\UserEventHandler.cs" />
     <Compile Include="Views\AccountAssociationInputModel.cs" />
     <Compile Include="Views\AccountAssociationView.cs" />
     <Compile Include="Indexes\AccountIdentityByUserId.cs" />
     <Compile Include="IViewFactory.cs" />
     <Compile Include="IViewRepository.cs" />
     <Compile Include="IRepositoryFactory.cs" />
-    <Compile Include="Contracts\IView.cs" />
     <Compile Include="Meeting\CameraStream.cs" />
     <Compile Include="Meeting\MeetingCameraStreamsView.cs" />
     <Compile Include="Notification\ViewUpdated.cs" />

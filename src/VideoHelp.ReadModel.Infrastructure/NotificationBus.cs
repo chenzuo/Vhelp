@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using MassTransit;
-using VideoHelp.ReadModel.Contracts;
+using VideoHelp.ReadModel.Documents;
 using VideoHelp.ReadModel.Notification;
 
 namespace VideoHelp.ReadModel.Infrastructure
@@ -17,14 +17,14 @@ namespace VideoHelp.ReadModel.Infrastructure
             _resetEvent = new ManualResetEventSlim(false);
         }
 
-        bool INotificationBus.WaitNotification<TView>(Guid guid, int timeoutInSec)
+        public bool WaitNotification<T>(Guid documentId, int timeoutInSec) where T : IDocument
         {
             bool result = false;
-            var cancelSubscription = _serviceBus.SubscribeHandler<ViewUpdated<TView>>(notification => 
+            var cancelSubscription = _serviceBus.SubscribeHandler<DocumentUpdated<T>>(notification => 
                                     { 
                                         result = true; 
                                        _resetEvent.Set();
-                                    }, obj => obj.ViewId == guid);
+                                    }, obj => obj.DocumentId == documentId);
 
             _resetEvent.Wait(timeoutInSec * 1000);
             if( !result)
@@ -35,16 +35,16 @@ namespace VideoHelp.ReadModel.Infrastructure
             return result;
         }
 
-        public Action SubscribeNotification<TView>(Action<Guid> updateAction) where TView : IView
+        public Action SubscribeNotification<TDoc>(Action<Guid> updateAction) where TDoc : IDocument
         {
-            var unsubscriber =_serviceBus.SubscribeHandler<ViewUpdated<TView>>(notification => updateAction(notification.ViewId));
+            var unsubscriber =_serviceBus.SubscribeHandler<DocumentUpdated<TDoc>>(notification => updateAction(notification.DocumentId));
 
             return () => unsubscriber();
         }
 
-        public void PublishNotification<TView>(ViewUpdated<TView> notification) where TView : IView
+        public void PublishNotification<TDoc>(TDoc document) where TDoc : IDocument
         {
-            _serviceBus.Publish(notification);
+            _serviceBus.Publish(new DocumentUpdated<TDoc>(document));
         }
     }
 }

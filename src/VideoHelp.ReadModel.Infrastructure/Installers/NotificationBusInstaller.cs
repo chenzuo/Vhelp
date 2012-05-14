@@ -2,7 +2,6 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using MassTransit;
-using VideoHelp.ReadModel.Contracts;
 
 namespace VideoHelp.ReadModel.Infrastructure.Installers
 {

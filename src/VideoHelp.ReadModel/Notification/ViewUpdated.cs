@@ -1,18 +1,18 @@
 using System;
 using System.Runtime.Serialization;
-using VideoHelp.ReadModel.Contracts;
+using VideoHelp.ReadModel.Documents;
 
 namespace VideoHelp.ReadModel.Notification
 {
     [DataContract]
-    public class ViewUpdated<T> : INotification<T> where T : IView
+    public class DocumentUpdated<T> where T : IDocument
     {
-        public ViewUpdated(Guid viewId)
+        public DocumentUpdated(T document)
         {
-            ViewId = viewId;
+            DocumentId = document.Id;
         }
 
         [DataMember(Order = 1)]
-        public Guid ViewId { get; private set; }
+        public Guid DocumentId { get; private set; }
     }
 }

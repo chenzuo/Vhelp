@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
-using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Users;
 using System.Monads;
 using System.Linq;

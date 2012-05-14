@@ -1,5 +1,4 @@
 ﻿using VideoHelp.Domain.Messages.Events.Users;
-using VideoHelp.ReadModel.Contracts;
 using VideoHelp.ReadModel.Notification;
 
 namespace VideoHelp.ReadModel.Users
