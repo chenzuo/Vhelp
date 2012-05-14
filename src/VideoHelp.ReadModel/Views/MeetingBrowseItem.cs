@@ -1,21 +1,18 @@
 using System;
 
-namespace VideoHelp.ReadModel.Meeting
+namespace VideoHelp.ReadModel.Views
 {
-    public class MeetingListView : IView
+    public class MeetingBrowseItem
     {
-        public MeetingListView(Guid id, Guid ownerId, string ownerNick, string name, DateTime creationDate)
+        public MeetingBrowseItem(Guid meetingId, string ownerNick, string name, DateTime creationDate)
         {
-            Id = id;
-            OwnerId = ownerId;
+            Id = meetingId;
             OwnerNick = ownerNick;
             Name = name;
             CreationDate = creationDate;
         }
 
         public Guid Id { get; set; }
-
-        public Guid OwnerId { get; set; }
         
         public string OwnerNick { get; set; }
 

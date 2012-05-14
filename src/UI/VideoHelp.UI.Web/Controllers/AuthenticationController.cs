@@ -4,9 +4,9 @@ using System.Web.Mvc;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
-using VideoHelp.ReadModel.Users;
 using System.Monads;
 using System.Linq;
+using VideoHelp.ReadModel.Documents;
 using VideoHelp.ReadModel.Views;
 using VideoHelp.UI.Utility;
 using VideoHelp.UI.Utility.UloginAuthentication;
@@ -15,17 +15,13 @@ namespace VideoHelp.UI.Web.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly IRepositoryFactory _repositoryFactory;
         private readonly IViewRepository _viewRepository;
         private readonly INotificationBus _notificationBus;
         private readonly ICommandBus _commandBus;
 
-        public AuthenticationController(ICommandBus commandBus, IRepositoryFactory repositoryFactory, IViewRepository viewRepository, INotificationBus notificationBus)
+        public AuthenticationController(ICommandBus commandBus, IViewRepository viewRepository, INotificationBus notificationBus)
         {
-            _repositoryFactory = repositoryFactory;
             _viewRepository = viewRepository;
-
-            _viewRepository.Load<UserAccoutViewInputModel, UserAccoutView>(new UserAccoutViewInputModel{UserId = Guid.NewGuid()});
             _notificationBus = notificationBus;
             _commandBus = commandBus.CheckNull("commandBus");
         }
@@ -63,33 +59,25 @@ namespace VideoHelp.UI.Web.Controllers
             {
                 userId = Guid.NewGuid();
                 _commandBus.Publish(new CreateUser(userId, account.NickName, account.FirstName, account.LastName, account.Email, account.Network, account.Identity.ToLower()));
-                var isUpdated = _notificationBus.WaitNotification<UserView>(userId);
+                var isUpdated = _notificationBus.WaitNotification<UserDocument>(userId);
                 if (!isUpdated)
                 {
                     throw new HttpException(500, "Жопа! Такого не должно быть!");
                 }
             }
 
-            UserView user;
-
-            using (var repository = _repositoryFactory.Create())
-            {
-                user = repository.GetById<UserView>(userId);
-            }
-
-            _commandBus.Publish(new UpdateUserState(user.Id, DateTime.Now, UserState.Online));
-            UserManager.Loggin(user.Id, user.Nick);
+            UserAccoutView user = _viewRepository.Load<UserAccoutInputModel, UserAccoutView>(new UserAccoutInputModel(userId));
+            
+            _commandBus.Publish(new UpdateUserState(user.UserId, DateTime.Now, UserState.Online));
+            UserManager.Loggin(user.UserId, user.Nick);
 
 
             return RedirectToAction("Index", "Meetings");
         }
 
-        private UserAssociationView geUsertAssociationWith(AccountInformation account)
+        private AccountAssociationView geUsertAssociationWith(AccountInformation account)
         {
-            using (var repository = _repositoryFactory.Create())
-            {
-                return repository.GetAll<UserAssociationView>().FirstOrDefault(identity => identity.Identity == account.Identity.ToLower());
-            }
+            return _viewRepository.Load<AccountAssociationInputModel, AccountAssociationView>(new AccountAssociationInputModel(account.Identity));
         }
 
     }

@@ -1,5 +1,5 @@
-﻿@using VideoHelp.ReadModel.Meeting
-@model IEnumerable<VideoHelp.ReadModel.Meeting.MeetingListView>
+﻿@using VideoHelp.ReadModel.Views
+@model MeetingBrowseView
 
 @{
     ViewBag.Title = "Список комнат";
@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (MeetingListView meeting in Model)
+                    @foreach (MeetingBrowseItem meeting in Model.Items)
                     {
                         <tr>
                             <td>@Html.ActionLink(@meeting.Name, "Meeting", new {meetingId = @meeting.Id}, null) </td>

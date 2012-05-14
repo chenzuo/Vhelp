@@ -6,9 +6,10 @@ namespace VideoHelp.Domain.Messages.Events.Users
     [DataContract]
     public class UserAssociatedWithIdentity : DomainEvent
     {
-        public UserAssociatedWithIdentity(Guid id, string identity) : base(id)
+        public UserAssociatedWithIdentity(Guid id, string identity, string network) : base(id)
         {
             Identity = identity;
+            Network = network;
         }
 
         [DataMember(Order = 3)]

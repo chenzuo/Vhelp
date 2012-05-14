@@ -1,10 +1,9 @@
-using System.Linq;
 using Raven.Client;
 using VideoHelp.ReadModel.Documents;
 
 namespace VideoHelp.ReadModel.Views
 {
-    public class UserAccoutViewFactory : IViewFactory<UserAccoutViewInputModel, UserAccoutView>
+    public class UserAccoutViewFactory : IViewFactory<UserAccoutInputModel, UserAccoutView>
     {
         private readonly IDocumentStore _documentStore;
 
@@ -14,19 +13,17 @@ namespace VideoHelp.ReadModel.Views
         }
 
 
-        public UserAccoutView Load(UserAccoutViewInputModel input)
+        public UserAccoutView Load(UserAccoutInputModel input)
         {
             using (var session = _documentStore.OpenSession())
             {
-                return session.Query<UserDocument>()
-                    .Where(document => document.Id == input.UserId)
-                    .Select(document => new UserAccoutView
-                                            {
-                                                Email = document.Email,
-                                                UserId = document.Id,
-                                                Nick = document.Nick,
-                                            })
-                    .FirstOrDefault();
+                var document = session.Load<UserDocument>(input.UserId);
+                return new UserAccoutView
+                {
+                    Email = document.Email,
+                    UserId = document.Id,
+                    Nick = document.Nick,
+                };
             }
         }
     }

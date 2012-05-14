@@ -18,7 +18,10 @@ namespace VideoHelp.ReadModel.Indexes
                             };
 
 
-            Reduce = results => from result in results select result;
+            Reduce = results => from result in results 
+                                group result by new { result.AccountIdentity, result.UserId } 
+                                into g
+                                select new { g.Key.AccountIdentity, g.Key.UserId };
 
         }
     }

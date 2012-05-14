@@ -10,7 +10,7 @@ namespace VideoHelp.ReadModel.Infrastructure.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            IndexCreation.CreateIndexes(typeof(ViewRepository).Assembly, container.Resolve<IDocumentStore>());
+            IndexCreation.CreateIndexes(typeof(ViewRepository).Assembly, container.Resolve<IDocumentStore>());   
         }
     }
 }

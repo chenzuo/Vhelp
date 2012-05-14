@@ -4,4 +4,9 @@ namespace VideoHelp.ReadModel
     {
         TOutput Load(TInput input);
     }
+
+    public interface IViewFactory<TOutput>
+    {
+        TOutput Load();
+    }
 }

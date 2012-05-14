@@ -11,6 +11,9 @@ namespace VideoHelp.ReadModel.Infrastructure.Installers
             container.Register(AllTypes.FromAssemblyContaining<ViewRepository>()
                                    .BasedOn(typeof (IViewFactory<,>)).WithService.AllInterfaces());
 
+            container.Register(AllTypes.FromAssemblyContaining<ViewRepository>()
+                                   .BasedOn(typeof (IViewFactory<>)).WithService.AllInterfaces());
+
             container.Register(Component.For<IViewRepository>().Instance(new ViewRepository(container.Resolve)));
         }
     }

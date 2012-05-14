@@ -3,35 +3,31 @@ using System.Web.Mvc;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
-using VideoHelp.ReadModel.Meeting;
+using VideoHelp.ReadModel.Views;
 
 namespace VideoHelp.UI.Web.Controllers
 {
     public class MeetingsController : Controller
     {
-        private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IViewRepository _repository;
         private readonly ICommandBus _commandBus;
 
-        public MeetingsController(IRepositoryFactory repositoryFactory, ICommandBus commandBus)
+        public MeetingsController(IViewRepository repository, ICommandBus commandBus)
         {
-            _repositoryFactory = repositoryFactory;
+            _repository = repository;
             _commandBus = commandBus;
         }
 
         public ActionResult Index()
         {
-            using (var repository = _repositoryFactory.Create())
-            {
-                return View(repository.GetAll<MeetingListView>());
-            }
+            var view = _repository.Load<MeetingBrowseInputModel, MeetingBrowseView>(new MeetingBrowseInputModel(0, 20));
+            return View(view);
         }
 
         public ActionResult Meeting(Guid meetingId)
         {
-            using (var repository = _repositoryFactory.Create())
-            {
-                return View(repository.GetById<MeetingView>(meetingId));
-            }
+            var view = _repository.Load<MeetingInputModel, MeetingView>(new MeetingInputModel(meetingId));
+            return View(view);
         }
 
         [HttpPost]

@@ -28,10 +28,9 @@ namespace VideoHelp.UI.Web.AppStart
                 .Install(
                     new TransportBusInstaller(endpoint),
                     new CommandBusInstaller(),
-                    new RavenInstaller(),
-                    new RavenRepositoryFactoryInstaller(),
-                    new SecurityConfigurationInstaller(),
                     new NotificationBusInstaller(),
+                    new RavenInstaller(),
+                    new SecurityConfigurationInstaller(),
                     new ViewRepositoryInstaller()
                 );
 

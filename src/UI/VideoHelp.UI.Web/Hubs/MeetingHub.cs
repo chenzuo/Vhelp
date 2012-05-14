@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,47 +11,41 @@ using SignalR.Hubs;
 using VideoHelp.Domain.Messages.Commands;
 using VideoHelp.Infrastructure;
 using VideoHelp.ReadModel;
-using VideoHelp.ReadModel.Meeting;
-using VideoHelp.ReadModel.Notification;
-using System.Monads;
-using System.Linq;
+using VideoHelp.ReadModel.Views;
 
 namespace VideoHelp.UI.Web.Hubs
 {
     public class MeetingHub : Hub, IDisconnect, IConnected
     {
         private readonly ICommandBus _commandBus;
-        private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IViewRepository _viewRepository;
 
 
         public MeetingHub()
         {
             _commandBus = DependencyResolver.Current.GetService<ICommandBus>();
-            _repositoryFactory = DependencyResolver.Current.GetService<IRepositoryFactory>();
+            _viewRepository = DependencyResolver.Current.GetService<IViewRepository>();
         }
 
         public void JoinToMeeting(string meetingId, string userId)
         {
             GroupManager.AddToGroup(Context.ConnectionId, meetingId);
             var userGuid = new Guid(userId);
-            var meetingGuid = new Guid(meetingId);
 
-            using (var repository = _repositoryFactory.Create())
+            var streams = _viewRepository.Load<MeetingInputModel, MeetingView>(new MeetingInputModel(new Guid(meetingId)));
+
+
+            if (streams == null)
             {
-                var streams = repository.GetById<MeetingCameraStreamsView>(meetingGuid);
-                if (streams == null)
-                {
-                    return;
-                }
-
-                foreach (var stream in streams.CameraStreams.Where(content => content.OwnerUser != userGuid))
-                {
-                    Caller.updateCameraStream(stream.OwnerUser, stream.StreamLink);
-                }
-
+                return;
             }
-        }
 
+            foreach (var stream in streams.WebCameraStreams.Where(content => content.OwnerUser != userGuid))
+            {
+                Caller.updateCameraStream(stream.OwnerUser, stream.StreamSource);
+            }
+
+        }
 
         public void AttachCameraStream(string meetingId, string userId, string farId)
         {

@@ -1,15 +1,9 @@
 ﻿using Raven.Client;
-using VideoHelp.Domain.Messages;
 using VideoHelp.Domain.Messages.Events.Users;
 using VideoHelp.ReadModel.Documents;
 
 namespace VideoHelp.ReadModel.EventHandlers
 {
-    public interface IEventHandler<in T> where T : DomainEvent
-    {
-        void Handle(T @event);
-    }
-
     public class UserEventHandler : IEventHandler<UserCreated>, IEventHandler<UserAssociatedWithIdentity>
     {
         private readonly IDocumentStore _documentStore;

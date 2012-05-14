@@ -15,10 +15,10 @@ namespace VideoHelp.Domain.CommandHandlers
 
         public void Handle(CreateUser command)
         {
-            var user = User.Create(command.AggregateId, command.Nick, command.FirstName, command.LastName, command.Email, command.Network);
+            var user = User.Create(command.AggregateId, command.Nick, command.FirstName, command.LastName, command.Email);
             _repository.Save(user, Guid.NewGuid());
 
-            user.AssociatWithIdentity(command.Identity);
+            user.AssociatWithIdentity(command.Identity, command.Network);
             _repository.Save(user, Guid.NewGuid());
         }
 

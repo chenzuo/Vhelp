@@ -27,7 +27,7 @@ namespace VideoHelp.Domain
             Id = @event.AggregateId;
             OwnerUser = @event.OwnerUser;
             MeetingId = @event.MeetingId;
-            StreamLink = @event.StreamLink;
+            StreamLink = @event.StreamSource;
         }
     }
 }

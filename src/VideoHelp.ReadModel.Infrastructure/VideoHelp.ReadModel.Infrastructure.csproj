@@ -123,15 +123,21 @@
     <Compile Include="Installers\ViewRepositoryInstaller.cs" />
     <Compile Include="NotificationBus.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
-    <Compile Include="Installers\RavenRepositoryFactoryInstaller.cs" />
+    <Compile Include="Installers\EventHandlersInstaller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RavenRepository.cs" />
-    <Compile Include="RavenRepositoryFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VideoHelp.Domain.Messages\VideoHelp.Domain.Messages.csproj">
+      <Project>{BE6FD943-C1C8-4684-A8FC-1187D4FE4B7D}</Project>
+      <Name>VideoHelp.Domain.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VideoHelp.Infrastructure\VideoHelp.Infrastructure.csproj">
+      <Project>{67AC32C1-D7D6-41C6-A12E-BD29F37DA8B5}</Project>
+      <Name>VideoHelp.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VideoHelp.ReadModel\VideoHelp.ReadModel.csproj">
       <Project>{DA84D52B-A34C-4224-889E-06CA792FFA03}</Project>
       <Name>VideoHelp.ReadModel</Name>

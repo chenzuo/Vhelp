@@ -8,15 +8,15 @@ namespace VideoHelp.Domain
 {
     public class User : AggregateBase
     {
-        public static User Create(Guid guid, string nick, string firstName, string lastName, string email, string network)
+        public static User Create(Guid guid, string nick, string firstName, string lastName, string email)
         {
-            return new User(guid, nick, firstName, lastName, email, network);
+            return new User(guid, nick, firstName, lastName, email);
         }
         public User(){}
 
-        private User(Guid guid, string nick, string firstName, string lastName, string email, string network)
+        private User(Guid guid, string nick, string firstName, string lastName, string email)
         {
-            RaiseEvent(new UserCreated(guid, nick, firstName, lastName, email, network));
+            RaiseEvent(new UserCreated(guid, nick, firstName, lastName, email));
         }
 
         public void AddOwnMeeting(Guid meetingId)
@@ -36,17 +36,15 @@ namespace VideoHelp.Domain
 
         public string Email { get; private set; }
 
-        public List<string> Identities { get; private set; }
-
         public UserState State { get; set; }
 
         public DateTime LastActivity { get; set; }
 
         public List<Guid> OwnMeetings { get; set; }
 
-        public void AssociatWithIdentity(string identity)
+        public void AssociatWithIdentity(string identity, string network)
         {
-            RaiseEvent(new UserAssociatedWithIdentity(Id, identity));
+            RaiseEvent(new UserAssociatedWithIdentity(Id, identity, network));
         }
 
         public void UpdateState(UserState state, DateTime onDate)
@@ -65,11 +63,6 @@ namespace VideoHelp.Domain
 
         private void Apply(UserAssociatedWithIdentity associatedWithIdentity)
         {
-            if(Identities == null)
-            {
-                Identities = new List<string>();
-            }
-            Identities.Add(associatedWithIdentity.Identity);
         }
 
         private void Apply(UserStateUpdated @event)

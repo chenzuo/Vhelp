@@ -10,7 +10,7 @@ namespace VideoHelp.Domain.Messages.Events.MediaContent
         {
             MeetingId = meetingId;
             OwnerUser = ownerUser;
-            StreamLink = streamLink;
+            StreamSource = streamLink;
         }
 
         [DataMember(Order = 3)]
@@ -20,6 +20,6 @@ namespace VideoHelp.Domain.Messages.Events.MediaContent
         public Guid OwnerUser { get; private set; }
 
         [DataMember(Order = 5)]
-        public string StreamLink { get; private set; }
+        public string StreamSource { get; private set; }
     }
 }
