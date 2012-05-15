@@ -29,7 +29,7 @@ namespace VideoHelp.ReadModel.Views
                     query = query.Where(x => x.Name.StartsWith(input.SearchText));
                 }
 
-                var items = query.ToArray().Select(x => new MeetingBrowseItem(x.Id, "", x.Name, x.CreationDate));
+                var items = query.ToArray().Select(x => new MeetingBrowseItem(x.DocumentId, "", x.Name, x.CreationDate));
                 return new MeetingBrowseView(input.PageSize, input.Page, input.SearchText, items);
             }
 

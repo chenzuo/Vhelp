@@ -19,7 +19,16 @@ namespace VideoHelp.ReadModel.EventHandlers
         {
             using (var session = _documentStore.OpenSession())
             {
-                var doc = new UserDocument(@event.AggregateId, @event.Nick, @event.FirstName, @event.LastName, @event.Email);
+                var doc = new UserDocument
+                              {
+                                  DocumentId = @event.AggregateId,
+                                  Nick = @event.Nick,
+                                  FirstName = @event.FirstName, 
+                                  LastName = @event.LastName,
+                                  Email  = @event.Email
+                              };
+
+                doc.AccountAssociations.Add(new AccountAssociationDocument{Identity = @event.AccountIdentity, Network = @event.Network});
                 session.Store(doc);
                 session.SaveChanges();
                 _bus.PublishNotification(doc); 
@@ -30,7 +39,7 @@ namespace VideoHelp.ReadModel.EventHandlers
         {
             using (var session = _documentStore.OpenSession())
             {
-                var doc = session.Load<UserDocument>(@event.AggregateId);
+                var doc = session.Load<UserDocument>(RavenDb.GetId<UserDocument>(@event.AggregateId));
                 doc.AccountAssociations.Add(new AccountAssociationDocument{Identity = @event.Identity, Network = @event.Network});
                 session.SaveChanges();
 

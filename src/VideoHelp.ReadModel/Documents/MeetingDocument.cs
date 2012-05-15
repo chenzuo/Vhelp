@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace VideoHelp.ReadModel.Documents
 {
-    public class MeetingDocument : IDocument
+    public class MeetingDocument : BaseDocument
     {
-        public Guid Id { get; set; }
-
         public Guid Owner { get; set; }
 
         public string Name { get; set; }

@@ -58,7 +58,7 @@ namespace VideoHelp.UI.Web.Controllers
             if (association == null || association.UserId == Guid.Empty)
             {
                 userId = Guid.NewGuid();
-                _commandBus.Publish(new CreateUser(userId, account.NickName, account.FirstName, account.LastName, account.Email, account.Network, account.Identity.ToLower()));
+                _commandBus.Publish(new CreateUser(userId, account.NickName, account.FirstName, account.LastName, account.Email, account.Network, account.Identity));
                 var isUpdated = _notificationBus.WaitNotification<UserDocument>(userId);
                 if (!isUpdated)
                 {

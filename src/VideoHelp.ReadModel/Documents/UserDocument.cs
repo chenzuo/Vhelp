@@ -3,23 +3,12 @@ using System.Collections.Generic;
 
 namespace VideoHelp.ReadModel.Documents
 {
-    public class UserDocument : IDocument
+    public class UserDocument : BaseDocument
     {
-        public UserDocument(Guid id, string nick, string firstName, string lastName, string email) : this()
-        {
-            Id = id;
-            Email = email;
-            FirstName = firstName;
-            LastName = lastName;
-            Nick = nick;
-        }
-
         public UserDocument()
         {
             AccountAssociations = new List<AccountAssociationDocument>();
         }
-
-        public Guid Id { get; set; }
 
         public string Nick { get; set; }
 

@@ -16,9 +16,9 @@ namespace VideoHelp.ReadModel.Views
         {
             using (var session = _documentStore.OpenSession())
             {
-                var doc = session.Load<MeetingDocument>(input.MeetingId);
+                var doc = session.Load<MeetingDocument>(RavenDb.GetId<MeetingDocument>(input.MeetingId));
 
-                return new MeetingView(doc.Id, doc.Name, doc.WebCameraStreams);
+                return new MeetingView(doc.DocumentId, doc.Name, doc.WebCameraStreams);
             }
         }
     }

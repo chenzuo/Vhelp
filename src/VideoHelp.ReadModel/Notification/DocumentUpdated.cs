@@ -9,7 +9,7 @@ namespace VideoHelp.ReadModel.Notification
     {
         public DocumentUpdated(T document)
         {
-            DocumentId = document.Id;
+            DocumentId = document.DocumentId;
         }
 
         [DataMember(Order = 1)]

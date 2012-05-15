@@ -17,11 +17,11 @@ namespace VideoHelp.ReadModel.Views
         {
             using (var session = _documentStore.OpenSession())
             {
-                var document = session.Load<UserDocument>(input.UserId);
+                var document = session.Load<UserDocument>(RavenDb.GetId<UserDocument>(input.UserId));
                 return new UserAccoutView
                 {
                     Email = document.Email,
-                    UserId = document.Id,
+                    UserId = document.DocumentId,
                     Nick = document.Nick,
                 };
             }

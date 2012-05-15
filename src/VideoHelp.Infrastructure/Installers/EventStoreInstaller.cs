@@ -25,7 +25,7 @@ namespace VideoHelp.Infrastructure.Installers
         {
             return Wireup.Init()
                 .UsingRavenPersistence("Raven")
-                .UsingAsynchronousDispatchScheduler(dispatchCommits)
+                .UsingSynchronousDispatchScheduler(dispatchCommits)
                 .Build();
         }
     }

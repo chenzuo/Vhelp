@@ -14,15 +14,14 @@ namespace VideoHelp.ReadModel.Indexes
                            select new
                             {
                                 AccountIdentity = association.Identity,
-                                UserId = user.Id
+                                UserId = user.DocumentId
                             };
 
 
             Reduce = results => from result in results 
                                 group result by new { result.AccountIdentity, result.UserId } 
                                 into g
-                                select new { g.Key.AccountIdentity, g.Key.UserId };
-
+                                    select new { g.Key.AccountIdentity, g.Key.UserId };
         }
     }
 }
