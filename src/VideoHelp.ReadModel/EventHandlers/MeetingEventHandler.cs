@@ -40,7 +40,7 @@ namespace VideoHelp.ReadModel.EventHandlers
         {
             using (var session = _documentStore.OpenSession())
             {
-                var doc = session.Load<MeetingDocument>(RavenDb.GetId<MeetingDocument>(@event.AggregateId));
+                var doc = session.Load<MeetingDocument>(RavenDb.GetId<MeetingDocument>(@event.MeetingId));
 
                 var stream = doc.WebCameraStreams.FirstOrDefault(cameraStream => cameraStream.OwnerUser == @event.OwnerUser);
                 if(stream == null)
