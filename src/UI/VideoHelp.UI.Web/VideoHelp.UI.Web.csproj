@@ -61,8 +61,21 @@
     <Reference Include="Monads, Version=1.1.5.0, Culture=neutral, PublicKeyToken=c45ad03d718dd7fa, processorArchitecture=MSIL">
       <HintPath>..\..\..\libs\Monads.1.1.5.0\lib\net40\Monads.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\libs\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\Newtonsoft.Json.4.5.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR, Version=0.5.96.10509, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\SignalR.Server.0.5.0\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.AspNet, Version=0.5.96.10509, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\SignalR.Hosting.AspNet.0.5.0\lib\net40\SignalR.Hosting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common, Version=0.5.96.10509, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\SignalR.Hosting.Common.0.5.0\lib\net40\SignalR.Hosting.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -170,8 +183,8 @@
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.masonry.min.js" />
-    <Content Include="Scripts\jquery.signalR.js" />
-    <Content Include="Scripts\jquery.signalR.min.js" />
+    <Content Include="Scripts\jquery.signalR-0.5.0.js" />
+    <Content Include="Scripts\jquery.signalR-0.5.0.min.js" />
     <Content Include="Scripts\jquery.swfobject.1-1-1.min.js" />
     <Content Include="Scripts\jquery.tmpl.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -223,18 +236,6 @@
     <Content Include="Views\Shared\_LogginMenuItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ExternalSource\SignalR.Hosting.AspNet\SignalR.Hosting.AspNet.csproj">
-      <Project>{0E513AE2-BEA8-40CF-B9F2-102B351F2FB2}</Project>
-      <Name>SignalR.Hosting.AspNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ExternalSource\SignalR.Hosting.Common\SignalR.Hosting.Common.csproj">
-      <Project>{3B71F0AE-D4B6-4F47-BF62-333D45615673}</Project>
-      <Name>SignalR.Hosting.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ExternalSource\SignalR\SignalR.csproj">
-      <Project>{1B9A82C4-BCA1-4834-A33E-226F17BE070B}</Project>
-      <Name>SignalR %28SignalR\SignalR%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\VideoHelp.Domain.Messages\VideoHelp.Domain.Messages.csproj">
       <Project>{BE6FD943-C1C8-4684-A8FC-1187D4FE4B7D}</Project>
       <Name>VideoHelp.Domain.Messages</Name>
@@ -292,4 +293,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\..\tools\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y  $(SolutionDir)..\libs\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll $(TargetDir)Newtonsoft.Json.dll</PostBuildEvent>
+  </PropertyGroup>
 </Project>

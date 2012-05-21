@@ -39,7 +39,8 @@ namespace VideoHelp.UI.Web.AppStart
             _container.Register(Component.For<IWindsorContainer>().Instance(_container));
 
             DependencyResolver.SetResolver(_container.Resolve, type => _container.ResolveAll(type).OfType<object>());
-            Global.DependencyResolver.Register(typeof(IConnectionIdFactory), () => new UserConnectionIdFactory());
+            
+            GlobalHost.DependencyResolver.Register(typeof(IConnectionIdGenerator), () => new UserConnectionIdGenerator());
 
 	    }
 

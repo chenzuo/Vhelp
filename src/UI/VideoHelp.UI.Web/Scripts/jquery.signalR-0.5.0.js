@@ -1,5 +1,5 @@
-﻿/*!
-* SignalR JavaScript Library v0.5
+/*!
+* SignalR JavaScript Library v0.5.0
 * http://signalr.net/
 *
 * Copyright David Fowler and Damian Edwards 2012
@@ -138,9 +138,12 @@
             };
 
             window.setTimeout(function () {
-                $.ajax(connection.url + "/negotiate", {
+                var url = connection.url + "/negotiate";
+                $.ajax({
+                    url: url,
                     global: false,
-                    type: "POST",
+                    cache: false,
+                    type: "GET",
                     data: {},
                     dataType: connection.ajaxDataType,
                     error: function (error) {
@@ -357,7 +360,8 @@
 
             var url = connection.url + "/send" + "?transport=" + connection.transport.name + "&connectionId=" + window.escape(connection.id);
             url = this.addQs(url, connection);
-            $.ajax(url, {
+            $.ajax({
+                url: url,
                 global: false,
                 type: "POST",
                 dataType: connection.ajaxDataType,
@@ -682,7 +686,7 @@
                     frameId = (transportLogic.foreverFrame.count += 1),
                     url,
                     connectTimeOut,
-                    frame = $("<iframe data-signalr-connection-id='" + connection.id + "' style='position:absolute;width:0;height:0;visibility:hidden;'></iframe>");
+                    frame = $("<iframe data-signalr-connection-id='" + connection.id + "' style='position:absolute;top:0;left:0;width:0;height:0;visibility:hidden;'></iframe>");
 
                 if (window.EventSource) {
                     // If the browser supports SSE, don't use Forever Frame
@@ -803,13 +807,11 @@
                             reconnectTimeOut = null,
                             reconnectFired = false;
 
-                        instance.pollXhr = $.ajax(url, {
+                        instance.pollXhr = $.ajax({
+                            url: url,
                             global: false,
-
                             type: "GET",
-
                             dataType: connection.ajaxDataType,
-
                             success: function (data) {
                                 var delay = 0,
                                     timedOutReceived = false;

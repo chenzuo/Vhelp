@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using SignalR;
@@ -29,7 +28,7 @@ namespace VideoHelp.UI.Web.Hubs
 
         public void JoinToMeeting(string meetingId, string userId)
         {
-            GroupManager.AddToGroup(Context.ConnectionId, meetingId);
+            Groups.Add(Context.ConnectionId, meetingId);
             var userGuid = new Guid(userId);
 
             var streams = _viewRepository.Load<MeetingInputModel, MeetingView>(new MeetingInputModel(new Guid(meetingId)));
@@ -74,9 +73,9 @@ namespace VideoHelp.UI.Web.Hubs
         }
     }
 
-    public class UserConnectionIdFactory : IConnectionIdFactory
+    public class UserConnectionIdGenerator : IConnectionIdGenerator
     {
-        public string CreateConnectionId(IRequest request, IPrincipal user)
+        public string GenerateConnectionId(IRequest request)
         {
             return UserManager.CurrentUser.ToString();
         }
